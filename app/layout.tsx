@@ -1,20 +1,42 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Roboto } from "next/font/google";
+import { Geist } from "next/font/google";
 import "./globals.css";
+import localFont from "next/font/local";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const roboto = Roboto({
-  subsets: ["latin"],
-  variable: "--font-roboto",
+const ppNeueMontreal = localFont({
+  src: [
+    {
+      path: "../public/fonts/pp_neue_montreal/ppneuemontreal-bold.woff",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/pp_neue_montreal/ppneuemontreal-book.woff",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/pp_neue_montreal/ppneuemontreal-italic.woff",
+      weight: "400",
+      style: "italic",
+    },
+    {
+      path: "../public/fonts/pp_neue_montreal/ppneuemontreal-medium.woff",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/pp_neue_montreal/ppneuemontreal-thin.woff",
+      weight: "200",
+      style: "normal",
+    },
+  ],
+  variable: "--font-p-n-montreal",
   display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const geistSans = Geist({
+  variable: "--font-geist-sans",
   subsets: ["latin"],
 });
 
@@ -29,12 +51,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} ${roboto.variable} antialiased`}
-      >
-        {children}
-      </body>
+    <html
+      lang="en"
+      className={`${geistSans.variable} ${ppNeueMontreal.variable} antialiased`}
+    >
+      <body>{children}</body>
     </html>
   );
 }
