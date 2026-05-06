@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import "./globals.css";
 import localFont from "next/font/local";
+import Navbar from "./components/Navbar";
+import NavbarSimple from "./components/NavbarSimple";
 
 const ppNeueMontreal = localFont({
   src: [
@@ -55,7 +57,10 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${ppNeueMontreal.variable} antialiased`}
     >
-      <body>{children}</body>
+      <body>
+        <Navbar />
+        {children}
+      </body>
     </html>
   );
 }
