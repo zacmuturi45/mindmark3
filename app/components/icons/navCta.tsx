@@ -14,29 +14,30 @@ interface childProp {
 
 export const NavCta = ({ closeDropdown }: childProp) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const wordRefs1 = useRef<HTMLSpanElement>(null);
-  const wordRefs2 = useRef<HTMLSpanElement>(null);
+  // const wordRefs1 = useRef<HTMLSpanElement>(null);
+  // const wordRefs2 = useRef<HTMLSpanElement>(null);
   const blackBgRef = useRef<HTMLDivElement>(null);
   const arrow1Ref = useRef<HTMLDivElement>(null);
   const arrow2Ref = useRef<HTMLDivElement>(null);
-  const split1Ref = useRef<SplitText | null>(null);
-  const split2Ref = useRef<SplitText | null>(null);
+  // const split1Ref = useRef<SplitText | null>(null);
+  // const split2Ref = useRef<SplitText | null>(null);
   const enterTlRef = useRef<gsap.core.Timeline | null>(null);
   const leaveTlRef = useRef<gsap.core.Timeline | null>(null);
+  const text = "Contact us";
 
   // ============================================================
   // INITIAL STATES
   // ============================================================
 
   useGSAP(() => {
-    if (wordRefs1.current) {
-      split1Ref.current = new SplitText(wordRefs1.current, { type: "chars" });
-    }
-    if (wordRefs2.current) {
-      split2Ref.current = new SplitText(wordRefs2.current, { type: "chars" });
-      // Row 2 starts below
-      gsap.set(split2Ref.current.words, { y: 0 });
-    }
+    // if (wordRefs1.current) {
+    //   split1Ref.current = new SplitText(wordRefs1.current, { type: "chars" });
+    // }
+    // if (wordRefs2.current) {
+    //   split2Ref.current = new SplitText(wordRefs2.current, { type: "chars" });
+    //   // Row 2 starts below
+    //   gsap.set(split2Ref.current.words, { y: 0 });
+    // }
 
     // Black bg starts scaled to 0 from bottom-left
     if (blackBgRef.current) {
@@ -61,7 +62,7 @@ export const NavCta = ({ closeDropdown }: childProp) => {
 
   const handleEnter = () => {
     closeDropdown();
-    if (!split1Ref.current || !split2Ref.current) return;
+    // if (!split1Ref.current || !split2Ref.current) return;
 
     leaveTlRef.current?.kill();
     enterTlRef.current?.kill();
@@ -71,25 +72,25 @@ export const NavCta = ({ closeDropdown }: childProp) => {
 
     // ── Step 1: Words row 1 exit up, row 2 enter from below ──
     // Both stagger simultaneously — row 1 exits as row 2 enters
-    tl.to(
-      split1Ref.current.chars,
-      {
-        y: "-100%",
-        duration: 0.4,
-        ease: "circ.inOut",
-        stagger: 0.007,
-      },
-      0, // starts at position 0 on the timeline
-    ).to(
-      split2Ref.current.chars,
-      {
-        y: "-100%",
-        duration: 0.4,
-        ease: "circ.inOut",
-        stagger: 0.007,
-      },
-      0, // same position — fires simultaneously with row 1
-    );
+    // tl.to(
+    //   split1Ref.current.chars,
+    //   {
+    //     y: "-100%",
+    //     duration: 0.4,
+    //     ease: "circ.inOut",
+    //     stagger: 0.007,
+    //   },
+    //   0, // starts at position 0 on the timeline
+    // ).to(
+    //   split2Ref.current.chars,
+    //   {
+    //     y: "-100%",
+    //     duration: 0.4,
+    //     ease: "circ.inOut",
+    //     stagger: 0.007,
+    //   },
+    //   0, // same position — fires simultaneously with row 1
+    // );
 
     // ── Step 2: Arrow 1 exits top-right ──────────────────────
     tl.to(
@@ -134,7 +135,7 @@ export const NavCta = ({ closeDropdown }: childProp) => {
   // ============================================================
 
   const handleLeave = () => {
-    if (!split1Ref.current || !split2Ref.current) return;
+    // if (!split1Ref.current || !split2Ref.current) return;
 
     // Kill both timelines
     enterTlRef.current?.kill();
@@ -142,9 +143,9 @@ export const NavCta = ({ closeDropdown }: childProp) => {
 
     const tl = gsap.timeline({
       onComplete: () => {
-        if (!split1Ref.current || !split2Ref.current) return;
-        gsap.set(split1Ref.current.words, { y: "0%" });
-        gsap.set(split2Ref.current.words, { y: "0%" });
+        // if (!split1Ref.current || !split2Ref.current) return;
+        // gsap.set(split1Ref.current.words, { y: "0%" });
+        // gsap.set(split2Ref.current.words, { y: "0%" });
         gsap.set(arrow1Ref.current, { x: "0%", y: "0%" });
         gsap.set(arrow2Ref.current, { x: "-100%", y: "100%" });
         gsap.set(blackBgRef.current, { scale: 0 });
@@ -188,25 +189,25 @@ export const NavCta = ({ closeDropdown }: childProp) => {
     );
 
     // ── Words row 2 exits down, row 1 returns ─────────────────
-    tl.to(
-      split2Ref.current?.chars,
-      {
-        y: "0%",
-        duration: 0.3,
-        ease: "circ.inOut",
-        stagger: 0.007,
-      },
-      "-=0.3",
-    ).to(
-      split1Ref.current.chars,
-      {
-        y: "0%",
-        duration: 0.3,
-        ease: "circ.inOut",
-        stagger: 0.007,
-      },
-      "<", // starts at same time as row 2 exit
-    );
+    // tl.to(
+    //   split2Ref.current?.chars,
+    //   {
+    //     y: "0%",
+    //     duration: 0.3,
+    //     ease: "circ.inOut",
+    //     stagger: 0.007,
+    //   },
+    //   "-=0.3",
+    // ).to(
+    //   split1Ref.current.chars,
+    //   {
+    //     y: "0%",
+    //     duration: 0.3,
+    //     ease: "circ.inOut",
+    //     stagger: 0.007,
+    //   },
+    //   "<", // starts at same time as row 2 exit
+    // );
   };
 
   // ============================================================
@@ -217,7 +218,7 @@ export const NavCta = ({ closeDropdown }: childProp) => {
     <div ref={wrapperRef}>
       <Link
         href={"/contact"}
-        className="flex items-center gap-3 shrink-0 cursor-pointer"
+        className="flex items-center gap-3 shrink-0 cursor-pointer group"
         onMouseEnter={handleEnter}
         onMouseLeave={handleLeave}
       >
@@ -225,26 +226,29 @@ export const NavCta = ({ closeDropdown }: childProp) => {
           h-[1.5em] = explicit height of one line (matches line-height)
           overflow-hidden masks row 2 sitting below
       ── */}
-        <div className="h-[1.5em] overflow-hidden flex flex-col">
-          {/* Row 1 — visible by default */}
-          <div className="flex gap-1">
-            <span
-              ref={wordRefs1}
-              className="text-nav-label font-p-n-montreal font-bold text-nav-text leading-none"
-            >
-              Contact us
-            </span>
-          </div>
-
-          {/* Row 2 — duplicate, starts below, GSAP moves it up */}
-          <div className="flex gap-1 mt-1">
-            <span
-              ref={wordRefs2}
-              className="text-nav-label font-p-n-montreal font-bold text-nav-text leading-none"
-            >
-              Contact us
-            </span>
-          </div>
+        <div className="h-[1.5em] flex flex-col">
+          {/* Text Animation */}
+          <span className="relative overflow-hidden inline-flex font-bold text-nav-label text-nav-text leading-none font-p-n-montreal">
+            {[...text].map((char, index) => (
+              <span
+                key={index}
+                style={{
+                  transitionDelay: `${index * 0.01}s`,
+                }}
+                className="
+              inline-block
+              transition-transform
+              duration-500
+              ease-[cubic-bezier(0.625,0.05,0,1)]
+              [text-shadow:0_1.2em_currentColor]
+              transform-[translateY(0em)]
+              group-hover:-translate-y-[1.2em]
+              "
+              >
+                {char === " " ? "\u00A0" : char}
+              </span>
+            ))}
+          </span>
         </div>
 
         {/* ── Arrow container ───────────────────────────────────────

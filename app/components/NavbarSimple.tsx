@@ -30,6 +30,8 @@ const NavbarSimple = () => {
   // ── Mobile tracking refs ─────────────────────────────────
   const isMobileOpen = useRef<boolean>(false);
   const openAccordion = useRef<number>(-1);
+  const burgerTopRef = useRef<HTMLSpanElement>(null);
+  const burgerBottomRef = useRef<HTMLSpanElement>(null);
 
   // ── Desktop refs ─────────────────────────────────────────
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -42,6 +44,7 @@ const NavbarSimple = () => {
   const imgRefs = useRef<(HTMLDivElement | null)[]>([]);
   const captionRefs = useRef<(HTMLDivElement | null)[]>([]);
   const imgWrapperRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const roundButtonRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   // ── Tracking refs ────────────────────────────────────────
   const openPanelIndex = useRef<number>(-1);
@@ -113,23 +116,7 @@ const NavbarSimple = () => {
     if (overlayRef.current) gsap.set(overlayRef.current, { opacity: 0 });
 
     // Mobile panel
-    if (mobilePanelRef.current) {
-      gsap.set(mobilePanelRef.current, {
-        opacity: 0,
-        y: 16,
-        pointerEvents: "none",
-      });
-    }
-
-    // Mobile accordions
-    accordionRefs.current.forEach((a) => {
-      if (a)
-        gsap.set(a, {
-          opacity: 0,
-          height: 0,
-          transformOrigin: "bottom center",
-        });
-    });
+    resetMobileMenu();
   }, [pathname]);
 
   // ============================================================
@@ -146,7 +133,6 @@ const NavbarSimple = () => {
     const chevron = chevronRefs.current[panelIndex];
     const pill = pillRefs.current[panelIndex];
     const img = imgRefs.current[panelIndex];
-    const caption = captionRefs.current[panelIndex];
     const isActive = dropdownTriggers[panelIndex]?.href === pathname;
 
     if (dropdown) {
@@ -406,6 +392,7 @@ const NavbarSimple = () => {
   // ============================================================
   const handleImageEnter = (panelIndex: number) => {
     const img = imgRefs.current[panelIndex];
+    const roundButton = roundButtonRefs.current[panelIndex];
     if (!img) return;
     gsap.killTweensOf(img);
     gsap.to(img, {
@@ -415,10 +402,18 @@ const NavbarSimple = () => {
       ease: "power2.out",
       overwrite: "auto",
     });
+
+    gsap.to(roundButton, {
+      scale: 1.1,
+      duration: 0.4,
+      ease: "back.out(2)",
+      overwrite: "auto",
+    });
   };
 
   const handleImageLeave = (panelIndex: number) => {
     const img = imgRefs.current[panelIndex];
+    const roundButton = roundButtonRefs.current[panelIndex];
     if (!img) return;
     gsap.killTweensOf(img);
     gsap.to(img, {
@@ -428,11 +423,100 @@ const NavbarSimple = () => {
       ease: "power2.out",
       overwrite: "auto",
     });
+
+    gsap.to(roundButton, {
+      scale: 1,
+      duration: 0.25,
+      ease: "power2.out",
+      overwrite: "auto",
+    });
   };
 
   // ============================================================
-  // MOBILE — HAMBURGER TOGGLE
+  // MOBILE — HAMBURGER TOGGLE & HELPERS
   // ============================================================
+
+  const closeMobileMenu = () => {
+    const panel = mobilePanelRef.current;
+
+    if (openAccordion.current !== -1) {
+      closeAccordion(openAccordion.current);
+    }
+
+    isMobileOpen.current = false;
+
+    // Close burger menu
+    gsap.to(burgerTopRef.current, {
+      position: "relative",
+      rotate: 0,
+      duration: 0.25,
+      ease: "back.out(2)",
+    });
+
+    gsap.to(burgerBottomRef.current, {
+      position: "relative",
+      rotate: 0,
+      duration: 0.25,
+      ease: "back.out(2)",
+    });
+
+    if (panel) {
+      gsap.killTweensOf(panel);
+
+      gsap.to(panel, {
+        opacity: 0,
+        y: 16,
+        duration: 0.35,
+        ease: "power3.in",
+        pointerEvents: "none",
+        overwrite: "auto",
+      });
+    }
+  };
+
+  const resetMobileMenu = () => {
+    isMobileOpen.current = false;
+    openAccordion.current = -1;
+
+    // Reset burger icon instantly
+    gsap.set(burgerTopRef.current, {
+      position: "relative",
+      rotate: 0,
+    });
+
+    gsap.set(burgerBottomRef.current, {
+      position: "relative",
+      rotate: 0,
+    });
+
+    // Reset mobile panel instantly
+    if (mobilePanelRef.current) {
+      gsap.set(mobilePanelRef.current, {
+        opacity: 0,
+        y: 16,
+        pointerEvents: "none",
+      });
+    }
+
+    // Reset accordions instantly
+    accordionRefs.current.forEach((a) => {
+      if (a) {
+        gsap.set(a, {
+          opacity: 0,
+          height: 0,
+        });
+      }
+    });
+
+    // Reset accordion chevrons instantly
+    mobileChevronRefs.current.forEach((c) => {
+      if (c) {
+        gsap.set(c, {
+          rotation: 0,
+        });
+      }
+    });
+  };
 
   const toggleMobileMenu = () => {
     const panel = mobilePanelRef.current;
@@ -440,6 +524,21 @@ const NavbarSimple = () => {
 
     if (!isMobileOpen.current) {
       isMobileOpen.current = true;
+
+      // Hamburger Menu
+      gsap.to(burgerTopRef.current, {
+        position: "absolute",
+        rotate: 45,
+        duration: 0.3,
+        ease: "back.out(2)",
+      });
+      gsap.to(burgerBottomRef.current, {
+        position: "absolute",
+        rotate: -45,
+        duration: 0.3,
+        ease: "back.out(2)",
+      });
+
       gsap.killTweensOf(panel);
       gsap.to(panel, {
         opacity: 1,
@@ -465,17 +564,7 @@ const NavbarSimple = () => {
         );
       }
     } else {
-      if (openAccordion.current !== -1) closeAccordion(openAccordion.current);
-      isMobileOpen.current = false;
-      gsap.killTweensOf(panel);
-      gsap.to(panel, {
-        opacity: 0,
-        y: 16,
-        duration: 0.35,
-        ease: "power3.in",
-        pointerEvents: "none",
-        overwrite: "auto",
-      });
+      closeMobileMenu();
     }
   };
 
@@ -723,7 +812,12 @@ const NavbarSimple = () => {
                         <span className="text-nav-label text-white font-medium">
                           {trigger.imageCaption ?? trigger.link_name}
                         </span>
-                        <div className="flex items-center justify-center w-8 h-8 rounded-full bg-white">
+                        <div
+                          ref={(el) => {
+                            roundButtonRefs.current[panelIndex] = el;
+                          }}
+                          className="flex items-center justify-center w-8 h-8 rounded-full bg-white"
+                        >
                           <svg
                             viewBox="0 0 1024 1024"
                             width={12}
@@ -842,14 +936,16 @@ const NavbarSimple = () => {
             className="flex items-center justify-center w-10 h-10 rounded-full bg-nav-cta"
             aria-label="Toggle navigation menu"
           >
-            <svg width="18" height="14" viewBox="0 0 18 14" fill="none">
-              <path
-                d="M0 1H18M0 7H18M0 13H18"
-                stroke="#1C2B2B"
-                strokeWidth="1.8"
-                strokeLinecap="round"
+            <div className="relative flex flex-col justify-center items-center gap-1.25 w-4.5">
+              <span
+                ref={burgerTopRef}
+                className="block w-full h-[1.5px] bg-[#1C2B2B] will-change-transform"
               />
-            </svg>
+              <span
+                ref={burgerBottomRef}
+                className="block w-full h-[1.5px] bg-[#1C2B2B] will-change-transform"
+              />
+            </div>
           </button>
         </div>
 
@@ -944,22 +1040,24 @@ const NavbarSimple = () => {
           </div>
 
           {/* Mobile CTA */}
-          <div className="absolute w-full h-nav-height-mobile left-0 mt-2 flex items-center justify-between bg-nav-bg rounded-xl px-5 py-4">
-            <span className="text-nav-text font-helvetica-now font-semibold text-nav-mobile tracking-nav-tight">
-              Contact us
-            </span>
+          <div className="absolute w-full h-nav-height-mobile flex items-center left-0 mt-2 bg-nav-bg rounded-xl px-5 py-4">
             <Link
               href="/contact"
-              className="flex items-center justify-center w-10 h-10 rounded-full bg-nav-cta"
+              className="flex items-center justify-between w-full"
             >
-              <svg viewBox="0 0 24 24" width={18} height={18} fill="none">
-                <path
-                  d="M7 7H17M17 7V17M17 7L7 17"
-                  stroke="#1C2B2B"
-                  strokeWidth="2"
-                  strokeLinecap="square"
-                />
-              </svg>
+              <span className="text-nav-text font-helvetica-now font-semibold text-nav-mobile tracking-nav-tight">
+                Contact us
+              </span>
+              <div className="flex items-center justify-center w-10 h-10 rounded-full bg-nav-cta">
+                <svg viewBox="0 0 24 24" width={18} height={18} fill="none">
+                  <path
+                    d="M7 7H17M17 7V17M17 7L7 17"
+                    stroke="#1C2B2B"
+                    strokeWidth="2"
+                    strokeLinecap="square"
+                  />
+                </svg>
+              </div>
             </Link>
           </div>
         </div>

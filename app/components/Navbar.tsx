@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { nav_links } from "@/app/data/navData";
+import { DropdownItem, nav_links } from "@/app/data/navData";
 import { NavCta } from "@/app/components/icons/navCta";
 import { RightChevron } from "./icons/rightChevron";
 import { ArrowRight } from "./icons/arrowRight";
@@ -12,6 +12,7 @@ import { useGSAP } from "@gsap/react";
 import { usePathname } from "next/navigation";
 import gsap from "gsap";
 import { Down_arrow } from "./icons/downArrow";
+import { getVisibleMobileLinks, hasSeeAll } from "../data/navDataSimple";
 
 const Navbar = () => {
   const pathname = usePathname();
@@ -25,6 +26,8 @@ const Navbar = () => {
   // ── Mobile tracking refs ─────────────────────────────────
   const isMobileOpen = useRef<boolean>(false);
   const openAccordion = useRef<number>(-1);
+  const burgerTopRef = useRef<HTMLSpanElement>(null);
+  const burgerBottomRef = useRef<HTMLSpanElement>(null);
 
   // ── Desktop refs ─────────────────────────────────────────
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -114,23 +117,7 @@ const Navbar = () => {
     if (overlayRef.current) gsap.set(overlayRef.current, { opacity: 0 });
 
     // Mobile panel
-    if (mobilePanelRef.current) {
-      gsap.set(mobilePanelRef.current, {
-        opacity: 0,
-        y: 16,
-        pointerEvents: "none",
-      });
-    }
-
-    // Mobile accordions
-    accordionRefs.current.forEach((a) => {
-      if (a)
-        gsap.set(a, {
-          opacity: 0,
-          height: 0,
-          transformOrigin: "bottom center",
-        });
-    });
+    resetMobileMenu();
   }, [pathname]);
 
   // ============================================================
@@ -443,8 +430,90 @@ const Navbar = () => {
   };
 
   // ============================================================
-  // MOBILE — HAMBURGER TOGGLE
+  // MOBILE — HAMBURGER TOGGLE & HELPERS
   // ============================================================
+
+  const closeMobileMenu = () => {
+    const panel = mobilePanelRef.current;
+
+    if (openAccordion.current !== -1) {
+      closeAccordion(openAccordion.current);
+    }
+
+    isMobileOpen.current = false;
+
+    // Close burger menu
+    gsap.to(burgerTopRef.current, {
+      position: "relative",
+      rotate: 0,
+      duration: 0.25,
+      ease: "back.out(2)",
+    });
+
+    gsap.to(burgerBottomRef.current, {
+      position: "relative",
+      rotate: 0,
+      duration: 0.25,
+      ease: "back.out(2)",
+    });
+
+    if (panel) {
+      gsap.killTweensOf(panel);
+
+      gsap.to(panel, {
+        opacity: 0,
+        y: 16,
+        duration: 0.35,
+        ease: "power3.in",
+        pointerEvents: "none",
+        overwrite: "auto",
+      });
+    }
+  };
+
+  const resetMobileMenu = () => {
+    isMobileOpen.current = false;
+    openAccordion.current = -1;
+
+    // Reset burger icon instantly
+    gsap.set(burgerTopRef.current, {
+      position: "relative",
+      rotate: 0,
+    });
+
+    gsap.set(burgerBottomRef.current, {
+      position: "relative",
+      rotate: 0,
+    });
+
+    // Reset mobile panel instantly
+    if (mobilePanelRef.current) {
+      gsap.set(mobilePanelRef.current, {
+        opacity: 0,
+        y: 16,
+        pointerEvents: "none",
+      });
+    }
+
+    // Reset accordions instantly
+    accordionRefs.current.forEach((a) => {
+      if (a) {
+        gsap.set(a, {
+          opacity: 0,
+          height: 0,
+        });
+      }
+    });
+
+    // Reset accordion chevrons instantly
+    mobileChevronRefs.current.forEach((c) => {
+      if (c) {
+        gsap.set(c, {
+          rotation: 0,
+        });
+      }
+    });
+  };
 
   const toggleMobileMenu = () => {
     const panel = mobilePanelRef.current;
@@ -452,6 +521,21 @@ const Navbar = () => {
 
     if (!isMobileOpen.current) {
       isMobileOpen.current = true;
+
+      // Hamburger Menu
+      gsap.to(burgerTopRef.current, {
+        position: "absolute",
+        rotate: 45,
+        duration: 0.3,
+        ease: "back.out(2)",
+      });
+      gsap.to(burgerBottomRef.current, {
+        position: "absolute",
+        rotate: -45,
+        duration: 0.3,
+        ease: "back.out(2)",
+      });
+
       gsap.killTweensOf(panel);
       gsap.to(panel, {
         opacity: 1,
@@ -477,17 +561,7 @@ const Navbar = () => {
         );
       }
     } else {
-      if (openAccordion.current !== -1) closeAccordion(openAccordion.current);
-      isMobileOpen.current = false;
-      gsap.killTweensOf(panel);
-      gsap.to(panel, {
-        opacity: 0,
-        y: 16,
-        duration: 0.35,
-        ease: "power3.in",
-        pointerEvents: "none",
-        overwrite: "auto",
-      });
+      closeMobileMenu();
     }
   };
 
@@ -822,14 +896,16 @@ const Navbar = () => {
             className="flex items-center justify-center w-10 h-10 rounded-full bg-nav-cta"
             aria-label="Toggle navigation menu"
           >
-            <svg width="18" height="14" viewBox="0 0 18 14" fill="none">
-              <path
-                d="M0 1H18M0 7H18M0 13H18"
-                stroke="#1C2B2B"
-                strokeWidth="1.8"
-                strokeLinecap="round"
+            <div className="relative flex flex-col justify-center items-center gap-1.25 w-4.5">
+              <span
+                ref={burgerTopRef}
+                className="block w-full h-[1.5px] bg-[#1C2B2B] will-change-transform"
               />
-            </svg>
+              <span
+                ref={burgerBottomRef}
+                className="block w-full h-[1.5px] bg-[#1C2B2B] will-change-transform"
+              />
+            </div>
           </button>
         </div>
 
@@ -858,7 +934,7 @@ const Navbar = () => {
                   ref={(el) => {
                     mobileRowRefs.current[i] = el;
                   }}
-                  className="border-b border-nav-text/8 last:border-0"
+                  className="border-b border-nav-text/20 last:border-0"
                 >
                   {isDropdown ? (
                     <>
@@ -884,7 +960,10 @@ const Navbar = () => {
                           }}
                           className="will-change-transform origin-top pb-3"
                         >
-                          {dropdownData?.dropdown_links.map((item) => (
+                          {getVisibleMobileLinks(
+                            (dropdownData?.dropdown_links as DropdownItem[]) ??
+                              [],
+                          ).map((item) => (
                             <Link
                               key={`mob-link-${item.link_name}`}
                               href={item.href}
@@ -893,6 +972,17 @@ const Navbar = () => {
                               {item.link_name}
                             </Link>
                           ))}
+                          {hasSeeAll(
+                            (dropdownData?.dropdown_links as DropdownItem[]) ??
+                              [],
+                          ) && (
+                            <Link
+                              href={navlink.href}
+                              className="block py-2 pl-2 text-nav-muted underline underline-offset-2 text-lg font-helvetica-now font-medium"
+                            >
+                              See All
+                            </Link>
+                          )}
                         </div>
                       </div>
                     </>
@@ -910,22 +1000,24 @@ const Navbar = () => {
           </div>
 
           {/* Mobile CTA */}
-          <div className="absolute w-full h-nav-height-mobile left-0 mt-2 flex items-center justify-between bg-nav-bg rounded-xl px-5 py-4">
-            <span className="text-nav-text font-helvetica-now font-semibold text-nav-mobile tracking-nav-tight">
-              Contact us
-            </span>
+          <div className="absolute w-full h-nav-height-mobile flex items-center left-0 mt-2 bg-nav-bg rounded-xl px-5 py-4">
             <Link
               href="/contact"
-              className="flex items-center justify-center w-10 h-10 rounded-full bg-nav-cta"
+              className="flex items-center justify-between w-full"
             >
-              <svg viewBox="0 0 24 24" width={18} height={18} fill="none">
-                <path
-                  d="M7 7H17M17 7V17M17 7L7 17"
-                  stroke="#1C2B2B"
-                  strokeWidth="2"
-                  strokeLinecap="square"
-                />
-              </svg>
+              <span className="text-nav-text font-helvetica-now font-semibold text-nav-mobile tracking-nav-tight">
+                Contact us
+              </span>
+              <div className="flex items-center justify-center w-10 h-10 rounded-full bg-nav-cta">
+                <svg viewBox="0 0 24 24" width={18} height={18} fill="none">
+                  <path
+                    d="M7 7H17M17 7V17M17 7L7 17"
+                    stroke="#1C2B2B"
+                    strokeWidth="2"
+                    strokeLinecap="square"
+                  />
+                </svg>
+              </div>
             </Link>
           </div>
         </div>

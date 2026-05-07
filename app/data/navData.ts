@@ -79,3 +79,14 @@ export const nav_links: NavLink[] = [
     dropdown_links: [],
   },
 ];
+
+// ── Helpers ──────────────────────────────────────────────────
+
+// Mobile: show first 5 links then "See All"
+export const MOBILE_LINK_LIMIT = 5;
+
+export const getVisibleMobileLinks = (links: DropdownItem[]): DropdownItem[] =>
+  links.slice(0, MOBILE_LINK_LIMIT);
+
+export const hasSeeAll = (links: DropdownItem[]): boolean =>
+  links.length > MOBILE_LINK_LIMIT;
