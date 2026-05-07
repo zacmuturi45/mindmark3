@@ -14,13 +14,9 @@ interface childProp {
 
 export const NavCta = ({ closeDropdown }: childProp) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
-  // const wordRefs1 = useRef<HTMLSpanElement>(null);
-  // const wordRefs2 = useRef<HTMLSpanElement>(null);
   const blackBgRef = useRef<HTMLDivElement>(null);
   const arrow1Ref = useRef<HTMLDivElement>(null);
   const arrow2Ref = useRef<HTMLDivElement>(null);
-  // const split1Ref = useRef<SplitText | null>(null);
-  // const split2Ref = useRef<SplitText | null>(null);
   const enterTlRef = useRef<gsap.core.Timeline | null>(null);
   const leaveTlRef = useRef<gsap.core.Timeline | null>(null);
   const text = "Contact us";
@@ -30,15 +26,6 @@ export const NavCta = ({ closeDropdown }: childProp) => {
   // ============================================================
 
   useGSAP(() => {
-    // if (wordRefs1.current) {
-    //   split1Ref.current = new SplitText(wordRefs1.current, { type: "chars" });
-    // }
-    // if (wordRefs2.current) {
-    //   split2Ref.current = new SplitText(wordRefs2.current, { type: "chars" });
-    //   // Row 2 starts below
-    //   gsap.set(split2Ref.current.words, { y: 0 });
-    // }
-
     // Black bg starts scaled to 0 from bottom-left
     if (blackBgRef.current) {
       gsap.set(blackBgRef.current, {
@@ -62,35 +49,12 @@ export const NavCta = ({ closeDropdown }: childProp) => {
 
   const handleEnter = () => {
     closeDropdown();
-    // if (!split1Ref.current || !split2Ref.current) return;
 
     leaveTlRef.current?.kill();
     enterTlRef.current?.kill();
 
     const tl = gsap.timeline();
     enterTlRef.current = tl;
-
-    // ── Step 1: Words row 1 exit up, row 2 enter from below ──
-    // Both stagger simultaneously — row 1 exits as row 2 enters
-    // tl.to(
-    //   split1Ref.current.chars,
-    //   {
-    //     y: "-100%",
-    //     duration: 0.4,
-    //     ease: "circ.inOut",
-    //     stagger: 0.007,
-    //   },
-    //   0, // starts at position 0 on the timeline
-    // ).to(
-    //   split2Ref.current.chars,
-    //   {
-    //     y: "-100%",
-    //     duration: 0.4,
-    //     ease: "circ.inOut",
-    //     stagger: 0.007,
-    //   },
-    //   0, // same position — fires simultaneously with row 1
-    // );
 
     // ── Step 2: Arrow 1 exits top-right ──────────────────────
     tl.to(
@@ -110,7 +74,7 @@ export const NavCta = ({ closeDropdown }: childProp) => {
       blackBgRef.current,
       {
         scale: 1,
-        duration: 0.25,
+        duration: 0.2,
         ease: "circ.inOut",
       },
       "-=0.25", // overlaps with arrow1 exit
@@ -123,7 +87,7 @@ export const NavCta = ({ closeDropdown }: childProp) => {
       {
         x: "0%",
         y: "0%",
-        duration: 0.25,
+        duration: 0.2,
         ease: "circ.inOut",
       },
       "-=0.18", // overlaps with black bg scaling
@@ -143,9 +107,6 @@ export const NavCta = ({ closeDropdown }: childProp) => {
 
     const tl = gsap.timeline({
       onComplete: () => {
-        // if (!split1Ref.current || !split2Ref.current) return;
-        // gsap.set(split1Ref.current.words, { y: "0%" });
-        // gsap.set(split2Ref.current.words, { y: "0%" });
         gsap.set(arrow1Ref.current, { x: "0%", y: "0%" });
         gsap.set(arrow2Ref.current, { x: "-100%", y: "100%" });
         gsap.set(blackBgRef.current, { scale: 0 });

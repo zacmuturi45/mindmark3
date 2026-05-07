@@ -681,7 +681,7 @@ const NavbarSimple = () => {
             <Link href="/" className="flex items-center gap-2 shrink-0">
               <LogoSvg width={32} height={32} />
               <span className="text-nav-text font-bold font-p-n-montreal text-nav-logo">
-                Sphere
+                Logo
               </span>
             </Link>
 
@@ -927,7 +927,7 @@ const NavbarSimple = () => {
           <Link href="/" className="flex items-center gap-2 shrink-0">
             <LogoSvg width={28} height={28} />
             <span className="text-nav-text font-bold font-p-n-montreal text-xl">
-              Sphere
+              Logo
             </span>
           </Link>
 
@@ -974,7 +974,7 @@ const NavbarSimple = () => {
                   ref={(el) => {
                     mobileRowRefs.current[i] = el;
                   }}
-                  className="border-b border-nav-text/8 last:border-0"
+                  className="border-b border-nav-text/20 last:border-0"
                 >
                   {isDropdown ? (
                     <>
@@ -1029,7 +1029,7 @@ const NavbarSimple = () => {
                   ) : (
                     <Link
                       href={navlink.href}
-                      className="block py-2 text-nav-text font-helvetica-now font-semibold text-nav-mobile tracking-nav-tight"
+                      className="block py-3 text-nav-text font-helvetica-now font-semibold text-nav-mobile tracking-nav-tight"
                     >
                       {navlink.link_name}
                     </Link>

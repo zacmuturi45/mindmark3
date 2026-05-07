@@ -674,11 +674,11 @@ const Navbar = () => {
           className="relative"
         >
           {/* Floating nav */}
-          <div className="w-[95vw] navwide:w-[62vw] max-w-nav h-nav-height bg-nav-bg rounded-nav flex items-center justify-between px-6">
+          <div className="w-[95vw] navWide:w-[62vw] max-w-nav h-nav-height bg-nav-bg rounded-nav flex items-center justify-between px-6">
             <Link href="/" className="flex items-center gap-2 shrink-0">
               <LogoSvg width={32} height={32} />
               <span className="text-nav-text font-bold font-p-n-montreal text-nav-logo">
-                Sphere
+                Logo
               </span>
             </Link>
 
@@ -765,7 +765,7 @@ const Navbar = () => {
                 ref={(el) => {
                   dropdownRefs.current[panelIndex] = el;
                 }}
-                className="absolute opacity-0 top-nav-height left-0 w-[95vw] navwide:w-[62vw] max-w-nav pt-dropdown-gap will-change-transform"
+                className="absolute opacity-0 top-nav-height left-0 w-[95vw] navWide:w-[62vw] max-w-nav pt-dropdown-gap will-change-transform"
               >
                 <div className="bg-nav-bg p-dropdown-pad rounded-dropdown h-112.5 flex overflow-hidden">
                   {/* Image column */}
@@ -887,7 +887,7 @@ const Navbar = () => {
           <Link href="/" className="flex items-center gap-2 shrink-0">
             <LogoSvg width={28} height={28} />
             <span className="text-nav-text font-bold font-p-n-montreal text-xl">
-              Sphere
+              Logo
             </span>
           </Link>
 
@@ -989,7 +989,7 @@ const Navbar = () => {
                   ) : (
                     <Link
                       href={navlink.href}
-                      className="block py-2 text-nav-text font-helvetica-now font-semibold text-nav-mobile tracking-nav-tight"
+                      className="block py-3 text-nav-text font-helvetica-now font-semibold text-nav-mobile tracking-nav-tight"
                     >
                       {navlink.link_name}
                     </Link>
