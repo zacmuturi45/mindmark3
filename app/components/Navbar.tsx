@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { DropdownItem, nav_links } from "@/app/data/navData";
 import { NavCta } from "@/app/components/icons/navCta";
-import { RightChevron } from "./icons/rightChevron";
 import { ArrowRight } from "./icons/arrowRight";
 import { LogoSvg } from "./icons/logo";
 import { useGSAP } from "@gsap/react";
@@ -191,6 +190,10 @@ const Navbar = () => {
         },
       );
     }
+
+    linkRefs.current[panelIndex]?.forEach((link) => {
+      if (link) link.tabIndex = 0;
+    });
   };
 
   // ============================================================
@@ -263,6 +266,10 @@ const Navbar = () => {
         overwrite: "auto",
       });
     }
+
+    linkRefs.current[panelIndex]?.forEach((link) => {
+      if (link) link.tabIndex = -1;
+    });
 
     openPanelIndex.current = -1;
   };
@@ -657,6 +664,46 @@ const Navbar = () => {
   };
 
   // ============================================================
+  // NAV FOCUS - Helper function to re-focus to nav link
+  // ============================================================
+  const handleDropdownLinkkeyDown = (
+    e: React.KeyboardEvent,
+    panelIndex: number,
+    itemIndex: number,
+    totalItems: number,
+  ) => {
+    if (e.key === "Tab") {
+      // 1. Shift + Tab on the first link -> Go back to the trigger
+      if (e.shiftKey && itemIndex === 0) {
+        e.preventDefault();
+        // This focuses the "trigger" link in the main bar
+        pillRefs.current[panelIndex]?.parentElement?.focus();
+        closeDropdown(panelIndex);
+      }
+
+      // 2. Tab (no shift) on the LAST link -> Go to NEXT nav item
+      else if (!e.shiftKey && itemIndex === totalItems - 1) {
+        e.preventDefault();
+        closeDropdown(panelIndex);
+
+        // Calculate the next focusable item in the main nav list
+        // We look for the parent of the trigger and find its next sibling
+        const currentTrigger = pillRefs.current[panelIndex]?.parentElement;
+        const nextTriggerContainer =
+          currentTrigger?.parentElement?.nextElementSibling;
+        const nextFocusable = nextTriggerContainer?.querySelector("a");
+
+        if (nextFocusable) {
+          (nextFocusable as HTMLElement).focus();
+        } else {
+          // Fallback: if no next link, go to CTA
+          document.querySelector<HTMLElement>(".nav-cta-button")?.focus();
+        }
+      }
+    }
+  };
+
+  // ============================================================
   // RENDER
   // ============================================================
 
@@ -682,7 +729,10 @@ const Navbar = () => {
               </span>
             </Link>
 
-            <nav className="flex items-center gap-nav-gap">
+            <nav
+              aria-label="Main navigation"
+              className="flex items-center gap-nav-gap"
+            >
               {nav_links.map((navlink, i) => {
                 const dropdownIndex = dropdownTriggers.findIndex(
                   (d) => d.link_name === navlink.link_name,
@@ -697,6 +747,22 @@ const Navbar = () => {
                         href={navlink.href}
                         className="relative z-0 flex items-center gap-1 px-nav-pill-x py-nav-pill-y font-p-n-montreal font-bold text-nav-label text-nav-text"
                         onMouseEnter={() => openDropdown(dropdownIndex)}
+                        onFocus={() => openDropdown(dropdownIndex)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Escape") {
+                            closeDropdown(dropdownIndex);
+                          }
+
+                          // Tab pressed on trigger - move into dropdown
+                          if (e.key === "Tab" && !e.shiftKey) {
+                            const firstLink =
+                              linkRefs.current[dropdownIndex]?.[0];
+                            if (firstLink) {
+                              e.preventDefault(); // Stop browser's natural tab
+                              firstLink.focus(); // manually focus first dropdown link
+                            }
+                          }
+                        }}
                       >
                         <div
                           ref={(el) => {
@@ -761,6 +827,9 @@ const Navbar = () => {
 
             return (
               <div
+                id={`dropdown-panel-${panelIndex}`}
+                role="menu"
+                aria-label={trigger.link_name}
                 key={trigger.link_name}
                 ref={(el) => {
                   dropdownRefs.current[panelIndex] = el;
@@ -783,23 +852,12 @@ const Navbar = () => {
                             src={item.image}
                             alt={item.link_name}
                             fill
+                            sizes="(min-width: 1440px) 320px, (min-width: 1024px) 28vw, 40vw"
+                            priority={panelIndex === 0 && itemIndex === 0}
                             style={{ objectFit: "cover" }}
                           />
                         </div>
                       ))}
-                    </div>
-
-                    {/* Caption */}
-                    <div className="absolute bottom-0 left-0 right-0 p-4 flex items-center justify-between opacity-0 will-change-transform">
-                      <span className="text-nav-caption text-white font-medium">
-                        {trigger.link_name}
-                      </span>
-                      <Link
-                        href={trigger.href}
-                        className="flex items-center justify-center w-8 h-8 rounded-full bg-white/20"
-                      >
-                        <RightChevron />
-                      </Link>
                     </div>
                   </div>
 
@@ -813,6 +871,7 @@ const Navbar = () => {
                             <Link
                               key={item.link_name}
                               href={item.href}
+                              tabIndex={-1}
                               ref={(el) => {
                                 linkRefs.current[panelIndex][globalIndex] = el;
                               }}
@@ -842,13 +901,24 @@ const Navbar = () => {
                       <div className="flex flex-col">
                         {colB.map((item, colIndex) => {
                           const globalIndex = colA.length + colIndex;
+                          const totalItems = trigger.dropdown_links.length;
+
                           return (
                             <Link
                               key={item.link_name}
                               href={item.href}
+                              tabIndex={-1}
                               ref={(el) => {
                                 linkRefs.current[panelIndex][globalIndex] = el;
                               }}
+                              onKeyDown={(e) =>
+                                handleDropdownLinkkeyDown(
+                                  e,
+                                  panelIndex,
+                                  globalIndex,
+                                  totalItems,
+                                )
+                              }
                               className="flex items-center py-2 text-nav-dropdown-link text-nav-text font-medium will-change-transform w-fit font-inter"
                               onMouseEnter={() =>
                                 handleLinkHover(panelIndex, globalIndex)
@@ -885,7 +955,7 @@ const Navbar = () => {
         {/* Mobile bar */}
         <div className="w-full h-nav-height-mobile bg-nav-bg rounded-nav flex items-center justify-between px-5">
           <Link href="/" className="flex items-center gap-2 shrink-0">
-            <LogoSvg width={28} height={28} />
+            {/* <LogoSvg width={28} height={28} /> */}
             <span className="text-nav-text font-bold font-p-n-montreal text-xl">
               Logo
             </span>

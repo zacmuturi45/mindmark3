@@ -58,7 +58,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${ppNeueMontreal.variable} antialiased`}
     >
       <body>
-        <NavbarSimple />
+        <Navbar />
         {children}
       </body>
     </html>

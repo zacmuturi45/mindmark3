@@ -26,14 +26,6 @@ export const NavCta = ({ closeDropdown }: childProp) => {
   // ============================================================
 
   useGSAP(() => {
-    // Black bg starts scaled to 0 from bottom-left
-    if (blackBgRef.current) {
-      gsap.set(blackBgRef.current, {
-        scale: 0,
-        transformOrigin: "bottom left",
-      });
-    }
-
     // Arrow 2 starts outside bottom-left of container
     if (arrow2Ref.current) {
       gsap.set(arrow2Ref.current, {
@@ -221,7 +213,7 @@ export const NavCta = ({ closeDropdown }: childProp) => {
           {/* Black bg — scales from bottom-left on hover */}
           <div
             ref={blackBgRef}
-            className="absolute inset-0 bg-black rounded-sm"
+            className="absolute inset-0 bg-black rounded-sm scale-0 origin-bottom-left"
           />
 
           {/* Arrow 1 — black, starts at position 0, exits top-right */}

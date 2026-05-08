@@ -98,9 +98,7 @@ const NavbarSimple = () => {
     // Arrows — all hidden
     dropdownTriggers.forEach((trigger, panelIndex) => {
       activeLinkIndex.current[panelIndex] = -1;
-      const links = Array.isArray(trigger.dropdown_links)
-        ? trigger.dropdown_links
-        : [];
+      const links = trigger.dropdown_links;
       links.forEach((_, itemIndex) => {
         const arrow = arrowRefs.current[panelIndex]?.[itemIndex];
         if (arrow) gsap.set(arrow, { x: -8, rotation: 90, opacity: 0 });
@@ -227,11 +225,7 @@ const NavbarSimple = () => {
         onComplete: () => {
           gsap.set(dropdown, { y: 16 });
           if (img) gsap.set(img, { scale: 1.1 });
-          const links = Array.isArray(
-            dropdownTriggers[panelIndex]?.dropdown_links,
-          )
-            ? (dropdownTriggers[panelIndex].dropdown_links as SimplePanelLink[])
-            : [];
+          const links = dropdownTriggers[panelIndex]?.dropdown_links;
           links.forEach((_, i) => {
             const arrow = arrowRefs.current[panelIndex]?.[i];
             if (arrow) gsap.set(arrow, { x: -8, rotation: 90, opacity: 0 });
@@ -397,7 +391,7 @@ const NavbarSimple = () => {
     gsap.killTweensOf(img);
     gsap.to(img, {
       scale: 1.08,
-      rotation: 2,
+      rotateZ: 2,
       duration: 0.6,
       ease: "power2.out",
       overwrite: "auto",
@@ -755,9 +749,7 @@ const NavbarSimple = () => {
 
           {/* Dropdown panels */}
           {dropdownTriggers.map((trigger, panelIndex) => {
-            const links = Array.isArray(trigger.dropdown_links)
-              ? (trigger.dropdown_links as SimplePanelLink[])
-              : [];
+            const links = trigger.dropdown_links;
             const half = Math.ceil(links.length / 2);
             const colA: SimplePanelLink[] = links.slice(0, half);
             const colB: SimplePanelLink[] = links.slice(half);

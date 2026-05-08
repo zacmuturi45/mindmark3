@@ -16,7 +16,7 @@ export interface SimpleNavLink {
   image?: string; // panel level — only on dropdown links
   imageCaption?: string;
   imageCaptionHref?: string;
-  dropdown_links: SimplePanelLink[] | boolean;
+  dropdown_links: SimplePanelLink[];
 }
 
 const methodologyLinks: SimplePanelLink[] = [
@@ -49,7 +49,7 @@ export const nav_links_simple: SimpleNavLink[] = [
     link_name: "Overview",
     href: "/overview",
     dropdown: false,
-    dropdown_links: false,
+    dropdown_links: [],
   },
   {
     id: 2,
@@ -58,7 +58,7 @@ export const nav_links_simple: SimpleNavLink[] = [
     dropdown: true,
     image: "/assets/nav2/pix1.webp",
     imageCaption: "Systems",
-    imageCaptionHref: "/methodology",
+    imageCaptionHref: "/systems",
     dropdown_links: methodologyLinks,
   },
   {
@@ -68,7 +68,7 @@ export const nav_links_simple: SimpleNavLink[] = [
     dropdown: true,
     image: "/assets/nav2/pix2.webp",
     imageCaption: "Framework",
-    imageCaptionHref: "/criteria",
+    imageCaptionHref: "/framework",
     dropdown_links: criteriaLinks,
   },
   {
@@ -76,14 +76,14 @@ export const nav_links_simple: SimpleNavLink[] = [
     link_name: "Process",
     href: "/process",
     dropdown: false,
-    dropdown_links: false,
+    dropdown_links: [],
   },
   {
-    id: 4,
+    id: 5,
     link_name: "Archive",
     href: "/archive",
     dropdown: false,
-    dropdown_links: false,
+    dropdown_links: [],
   },
 ];
 
