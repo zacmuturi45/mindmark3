@@ -19,16 +19,16 @@ Mixing them up won't break things immediately but fonts especially need inline o
 @theme {
   /* Breakpoints */
   --breakpoint-nav: 980px;
-  --breakpoint-navWide: 1600px;
+  --breakpoint-navWide: 1200px;
 
   /* Spacing */
-  --spacing-nav-height: 72px;
+  --spacing-nav-height: 64px;
   --spacing-nav-height-mobile: 64px;
-  --spacing-nav-offset: 24px;
+  --spacing-nav-offset: 16px;
   --spacing-nav-pill-x: 12px;
-  --spacing-nav-pill-y: 12px;
-  --spacing-nav-gap: 12px;
-  --spacing-dropdown-gap: 12px;
+  --spacing-nav-pill-y: 8px;
+  --spacing-nav-gap: 8px;
+  --spacing-dropdown-gap: 8px;
   --spacing-image-col: 32%;
   --spacing-dropdown-pad: 16px;
 
@@ -36,12 +36,12 @@ Mixing them up won't break things immediately but fonts especially need inline o
   --max-width-nav: 1300px;
 
   /* Border radius */
-  --radius-pill: 8px;
-  --radius-nav: 8px;
-  --radius-dropdown: 8px;
+  --radius-pill: 4px;
+  --radius-nav: 4px;
+  --radius-dropdown: 4px;
 
   /* Font sizes */
-  --text-nav-label: 20px;
+  --text-nav-label: 18px;
   --text-nav-label--line-height: 1.5;
   --text-nav-logo: 32px;
   --text-nav-logo--line-height: 1.2;
@@ -58,7 +58,7 @@ Mixing them up won't break things immediately but fonts especially need inline o
   --color-nav-bg: #f2f6f8;
   --color-nav-text: #383838;
   --color-nav-cta: #a9fd44;
-  --color-page-bg: #a9fd44;
+  --color-page-bg: #58ea1e;
   --color-nav-muted: #5a5a5a;
 
   /* Letter spacing */

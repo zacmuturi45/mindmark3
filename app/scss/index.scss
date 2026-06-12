@@ -1,0 +1,644 @@
+// ============================================================
+// NavbarSimple.scss
+// Converted from Tailwind + globals.css tokens
+// ============================================================
+
+// ── Breakpoints ─────────────────────────────────────────────
+$bp-nav: 980px;
+$bp-navWide: 1600px;
+
+// ── Spacing ──────────────────────────────────────────────────
+$nav-height: 72px;
+$nav-height-mobile: 64px;
+$nav-offset: 24px;
+$nav-pill-x: 12px;
+$nav-pill-y: 12px;
+$nav-gap: 12px;
+$dropdown-gap: 12px;
+$dropdown-pad: 16px;
+$image-col: 32%;
+
+// ── Width ─────────────────────────────────────────────────────
+$max-nav: 1300px;
+
+// ── Border radius ─────────────────────────────────────────────
+$radius-pill: 8px;
+$radius-nav: 8px;
+$radius-dropdown: 8px;
+
+// ── Font sizes ────────────────────────────────────────────────
+$text-nav-label: 20px;
+$text-nav-label-lh: 1.5;
+$text-nav-logo: 32px;
+$text-nav-logo-lh: 1.2;
+$text-nav-mobile: 24px;
+$text-nav-dropdown: 18px;
+$text-nav-dropdown-lh: 1;
+$text-nav-caption: 12px;
+
+// ── Colors ────────────────────────────────────────────────────
+$nav-bg: #f2f6f8;
+$nav-text: #383838;
+$nav-cta: #a9fd44;
+$nav-muted: #5a5a5a;
+
+// ── Letter spacing ────────────────────────────────────────────
+$tracking-nav-tight: -0.02em;
+
+// ── Derived ───────────────────────────────────────────────────
+// bg-nav-text/8  → rgba of #383838 at 8% opacity
+$nav-text-8: rgba(56, 56, 56, 0.08);
+// bg-nav-text/20 → rgba of #383838 at 20% opacity
+$nav-text-20: rgba(56, 56, 56, 0.2);
+// bg-nav-bg/40  → rgba of #f2f6f8 at 40% opacity
+$nav-bg-40: rgba(242, 246, 248, 0.4);
+
+// ── h-112.5 → 112.5 × 4px = 450px ───────────────────────────
+$dropdown-height: 450px;
+
+// ============================================================
+// OVERLAY
+// fixed inset-0 bg-nav-bg/40 pointer-events-none z-40 opacity-0 hidden nav:block
+// ============================================================
+
+.nav-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: $nav-bg-40;
+  pointer-events: none;
+  z-index: 40;
+  opacity: 0;
+  display: none;
+
+  @media (min-width: $bp-nav) {
+    display: block;
+  }
+}
+
+// ============================================================
+// DESKTOP WRAPPER
+// fixed top-nav-offset left-0 right-0 flex-col items-center z-50 hidden nav:flex
+// ============================================================
+
+.nav-desktop-wrapper {
+  position: fixed;
+  top: $nav-offset;
+  left: 0;
+  right: 0;
+  flex-direction: column;
+  align-items: center;
+  z-index: 50;
+  display: none;
+
+  @media (min-width: $bp-nav) {
+    display: flex;
+  }
+}
+
+// ── Float container ──────────────────────────────────────────
+// relative
+.nav-float-container {
+  position: relative;
+}
+
+// ============================================================
+// FLOATING BAR
+// w-[95vw] navWide:w-[62vw] max-w-nav h-nav-height bg-nav-bg rounded-nav
+// flex items-center justify-between px-6
+// ============================================================
+
+.nav-bar {
+  width: 95vw;
+  max-width: $max-nav;
+  height: $nav-height;
+  background-color: $nav-bg;
+  border-radius: $radius-nav;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 24px;
+  padding-right: 24px;
+
+  @media (min-width: $bp-navWide) {
+    width: 62vw;
+  }
+}
+
+// ── Logo link ─────────────────────────────────────────────────
+// flex items-center gap-2 shrink-0
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+
+// ── Logo text ─────────────────────────────────────────────────
+// text-nav-text font-bold font-p-n-montreal text-nav-logo
+.nav-logo-text {
+  color: $nav-text;
+  font-weight: 700;
+  font-family: var(--font-p-n-montreal), sans-serif;
+  font-size: $text-nav-logo;
+  line-height: $text-nav-logo-lh;
+}
+
+// ============================================================
+// DESKTOP NAV LIST
+// flex items-center gap-nav-gap
+// ============================================================
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: $nav-gap;
+}
+
+// ── Link wrapper ──────────────────────────────────────────────
+// relative
+.nav-link-wrap {
+  position: relative;
+}
+
+// ============================================================
+// DROPDOWN TRIGGER (anchor)
+// relative z-0 flex items-center gap-1 px-nav-pill-x py-nav-pill-y
+// font-p-n-montreal font-bold text-nav-label text-nav-text
+// ============================================================
+
+.nav-trigger {
+  position: relative;
+  z-index: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: $nav-pill-y $nav-pill-x;
+  font-family: var(--font-p-n-montreal), sans-serif;
+  font-weight: 700;
+  font-size: $text-nav-label;
+  line-height: $text-nav-label-lh;
+  color: $nav-text;
+  text-decoration: none;
+}
+
+// ── Pill (hover/active background)
+// absolute inset-0 bg-nav-text/8 rounded-pill -z-10 opacity-0
+.nav-pill {
+  position: absolute;
+  inset: 0;
+  background-color: $nav-text-8;
+  border-radius: $radius-pill;
+  z-index: -10;
+  opacity: 0;
+}
+
+// ── Chevron wrapper ───────────────────────────────────────────
+// flex items-center will-change-transform
+.nav-chevron {
+  display: flex;
+  align-items: center;
+  will-change: transform;
+}
+
+// ============================================================
+// PLAIN LINK (no dropdown)
+// relative z-0 flex items-center px-nav-pill-x py-nav-pill-y
+// font-p-n-montreal font-bold text-nav-label text-nav-text
+// ============================================================
+
+.nav-plain-link {
+  position: relative;
+  z-index: 0;
+  display: flex;
+  align-items: center;
+  padding: $nav-pill-y $nav-pill-x;
+  font-family: var(--font-p-n-montreal), sans-serif;
+  font-weight: 700;
+  font-size: $text-nav-label;
+  line-height: $text-nav-label-lh;
+  color: $nav-text;
+  text-decoration: none;
+}
+
+// Pill reused on plain links — same class .nav-pill above
+
+// ============================================================
+// DROPDOWN PANEL (outer positioner)
+// absolute opacity-0 top-nav-height left-0
+// w-[95vw] navWide:w-[62vw] max-w-nav
+// pt-dropdown-gap will-change-transform
+// ============================================================
+
+.nav-dropdown {
+  position: absolute;
+  opacity: 0;
+  top: $nav-height;
+  left: 0;
+  width: 95vw;
+  max-width: $max-nav;
+  padding-top: $dropdown-gap;
+  will-change: transform;
+
+  @media (min-width: $bp-navWide) {
+    width: 62vw;
+  }
+
+  // ── Dropdown inner card ──────────────────────────────────
+  // bg-nav-bg p-dropdown-pad rounded-dropdown h-112.5 flex overflow-hidden
+  &__inner {
+    background-color: $nav-bg;
+    padding: $dropdown-pad;
+    border-radius: $radius-dropdown;
+    height: $dropdown-height;
+    display: flex;
+    overflow: hidden;
+  }
+}
+
+// ============================================================
+// IMAGE LINK (left column of dropdown)
+// w-image-col relative rounded-pill shrink-0 overflow-hidden
+// ============================================================
+
+.nav-img-link {
+  width: $image-col;
+  position: relative;
+  border-radius: $radius-pill;
+  flex-shrink: 0;
+  overflow: hidden;
+  text-decoration: none;
+  display: block;
+}
+
+// ── Image wrapper ─────────────────────────────────────────────
+// absolute inset-0 will-change-transform
+.nav-img-wrap {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+
+// ── Caption overlay ───────────────────────────────────────────
+// absolute bottom-0 left-0 right-0 p-4 flex items-center will-change-transform
+.nav-img-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  will-change: transform;
+}
+
+// ── Caption inner row ─────────────────────────────────────────
+// flex items-center justify-between w-full
+.nav-caption-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+// ── Caption text ──────────────────────────────────────────────
+// text-nav-label text-white font-medium
+// Note: caption uses text-nav-label font-size (20px) — same token as nav links
+.nav-caption-text {
+  font-size: $text-nav-label;
+  line-height: $text-nav-label-lh;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+// ── Round arrow button ────────────────────────────────────────
+// flex items-center justify-center w-8 h-8 rounded-full bg-white
+.nav-round-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px; // w-8 = 8 × 4px
+  height: 32px; // h-8
+  border-radius: 50%;
+  background-color: #ffffff;
+}
+
+// ============================================================
+// LINKS COLUMN (right side of dropdown)
+// flex-1 flex px-8 py-6
+// ============================================================
+
+.nav-links-col {
+  flex: 1;
+  display: flex;
+  padding: 24px 32px; // py-6 = 24px, px-8 = 32px
+}
+
+// ── 2-col grid ────────────────────────────────────────────────
+// grid grid-cols-2 gap-x-4 gap-y-1 w-full
+.nav-links-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 16px; // gap-x-4
+  row-gap: 4px; // gap-y-1
+  width: 100%;
+}
+
+// ── Single column ─────────────────────────────────────────────
+// flex flex-col
+.nav-col {
+  display: flex;
+  flex-direction: column;
+}
+
+// ── Individual dropdown link ──────────────────────────────────
+// flex items-center py-2 text-nav-dropdown-link text-nav-text
+// font-medium will-change-transform w-fit font-inter
+.nav-dropdown-link {
+  display: flex;
+  align-items: center;
+  padding-top: 8px; // py-2
+  padding-bottom: 8px;
+  font-size: $text-nav-dropdown;
+  line-height: $text-nav-dropdown-lh;
+  color: $nav-text;
+  font-weight: 500;
+  will-change: transform;
+  width: fit-content;
+  font-family: var(--font-inter), sans-serif;
+  text-decoration: none;
+}
+
+// ── Arrow span ────────────────────────────────────────────────
+// flex items-center mr-2 will-change-transform
+.nav-arrow {
+  display: flex;
+  align-items: center;
+  margin-right: 8px; // mr-2
+  will-change: transform;
+}
+
+// ============================================================
+// MOBILE WRAPPER
+// fixed top-nav-offset left-0 right-0 flex flex-col items-center z-50 nav:hidden px-4
+// ============================================================
+
+.nav-mobile-wrapper {
+  position: fixed;
+  top: $nav-offset;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 50;
+  padding-left: 16px; // px-4
+  padding-right: 16px;
+
+  @media (min-width: $bp-nav) {
+    display: none;
+  }
+}
+
+// ============================================================
+// MOBILE BAR
+// w-full h-nav-height-mobile bg-nav-bg rounded-nav flex items-center justify-between px-5
+// ============================================================
+
+.nav-bar-mobile {
+  width: 100%;
+  height: $nav-height-mobile;
+  background-color: $nav-bg;
+  border-radius: $radius-nav;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 20px; // px-5
+  padding-right: 20px;
+}
+
+// ── Mobile logo text ──────────────────────────────────────────
+// text-nav-text font-bold font-p-n-montreal text-xl
+// text-xl = 20px (Tailwind default)
+.nav-logo-text--mobile {
+  color: $nav-text;
+  font-weight: 700;
+  font-family: var(--font-p-n-montreal), sans-serif;
+  font-size: 20px;
+}
+
+// ============================================================
+// BURGER BUTTON
+// flex items-center justify-center w-10 h-10 rounded-full bg-nav-cta
+// ============================================================
+
+.nav-burger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px; // w-10
+  height: 40px; // h-10
+  border-radius: 50%;
+  background-color: $nav-cta;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+// ── Burger inner container ────────────────────────────────────
+// relative flex flex-col justify-center items-center gap-1.25 w-4.5
+// gap-1.25 = 1.25 × 4px = 5px  |  w-4.5 = 4.5 × 4px = 18px
+.nav-burger-inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 18px;
+}
+
+// ── Burger lines ──────────────────────────────────────────────
+// block w-full h-[1.5px] bg-[#1C2B2B] will-change-transform
+.nav-burger-line {
+  display: block;
+  width: 100%;
+  height: 1.5px;
+  background-color: #1c2b2b;
+  will-change: transform;
+}
+
+// ============================================================
+// MOBILE PANEL
+// relative w-full mt-2 bg-nav-bg rounded-nav opacity-0 will-change-transform
+// ============================================================
+
+.nav-mobile-panel {
+  position: relative;
+  width: 100%;
+  margin-top: 8px; // mt-2
+  background-color: $nav-bg;
+  border-radius: $radius-nav;
+  opacity: 0;
+  will-change: transform;
+}
+
+// ── Mobile inner padding ──────────────────────────────────────
+// px-5 py-3
+.nav-mobile-inner {
+  padding: 12px 20px; // py-3 = 12px, px-5 = 20px
+}
+
+// ============================================================
+// MOBILE ROW
+// border-b border-nav-text/20 last:border-0
+// ============================================================
+
+.nav-mobile-row {
+  border-bottom: 1px solid $nav-text-20;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+// ============================================================
+// ACCORDION TRIGGER BUTTON
+// w-full flex items-center justify-between py-2 text-nav-text
+// font-helvetica-now font-semibold text-nav-mobile tracking-nav-tight
+// ============================================================
+
+.nav-mobile-acc-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 8px; // py-2
+  padding-bottom: 8px;
+  color: $nav-text;
+  font-family: var(--font-helvetica-now), sans-serif;
+  font-weight: 600;
+  font-size: $text-nav-mobile;
+  letter-spacing: $tracking-nav-tight;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+// ── Mobile chevron span ───────────────────────────────────────
+// flex items-center will-change-transform
+.nav-mobile-chevron {
+  display: flex;
+  align-items: center;
+  will-change: transform;
+}
+
+// ── Overflow clip wrapper ─────────────────────────────────────
+// overflow-hidden
+.nav-mobile-acc-overflow {
+  overflow: hidden;
+}
+
+// ── Accordion body ────────────────────────────────────────────
+// will-change-transform origin-top pb-3
+.nav-mobile-acc-body {
+  will-change: transform;
+  transform-origin: top;
+  padding-bottom: 12px; // pb-3
+}
+
+// ── Accordion link ────────────────────────────────────────────
+// block py-2 pl-2 text-nav-muted font-medium text-lg font-helvetica-now
+// text-lg = 18px (Tailwind default)
+.nav-mobile-acc-link {
+  display: block;
+  padding-top: 8px; // py-2
+  padding-bottom: 8px;
+  padding-left: 8px; // pl-2
+  color: $nav-muted;
+  font-weight: 500;
+  font-size: 18px; // text-lg
+  font-family: var(--font-helvetica-now), sans-serif;
+  text-decoration: none;
+}
+
+// ── See All link ──────────────────────────────────────────────
+// block py-2 pl-2 text-nav-muted underline underline-offset-2 text-lg font-helvetica-now font-medium
+.nav-mobile-see-all {
+  display: block;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 8px;
+  color: $nav-muted;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  font-size: 18px;
+  font-family: var(--font-helvetica-now), sans-serif;
+  font-weight: 500;
+}
+
+// ── Plain mobile link ─────────────────────────────────────────
+// block py-3 text-nav-text font-helvetica-now font-semibold text-nav-mobile tracking-nav-tight
+.nav-mobile-plain-link {
+  display: block;
+  padding-top: 12px; // py-3
+  padding-bottom: 12px;
+  color: $nav-text;
+  font-family: var(--font-helvetica-now), sans-serif;
+  font-weight: 600;
+  font-size: $text-nav-mobile;
+  letter-spacing: $tracking-nav-tight;
+  text-decoration: none;
+}
+
+// ============================================================
+// MOBILE CTA BAR
+// absolute w-full h-nav-height-mobile flex items-center left-0 mt-2
+// bg-nav-bg rounded-xl px-5 py-4
+// rounded-xl = 12px (Tailwind default)
+// ============================================================
+
+.nav-mobile-cta-bar {
+  position: absolute;
+  width: 100%;
+  height: $nav-height-mobile;
+  display: flex;
+  align-items: center;
+  left: 0;
+  margin-top: 8px; // mt-2
+  background-color: $nav-bg;
+  border-radius: 12px; // rounded-xl
+  padding: 16px 20px; // py-4 = 16px, px-5 = 20px
+}
+
+// ── Mobile CTA anchor ─────────────────────────────────────────
+// flex items-center justify-between w-full
+.nav-mobile-cta-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  text-decoration: none;
+}
+
+// ── Mobile CTA text ───────────────────────────────────────────
+// text-nav-text font-helvetica-now font-semibold text-nav-mobile tracking-nav-tight
+.nav-mobile-cta-text {
+  color: $nav-text;
+  font-family: var(--font-helvetica-now), sans-serif;
+  font-weight: 600;
+  font-size: $text-nav-mobile;
+  letter-spacing: $tracking-nav-tight;
+}
+
+// ── Mobile CTA icon circle ────────────────────────────────────
+// flex items-center justify-center w-10 h-10 rounded-full bg-nav-cta
+.nav-mobile-cta-circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px; // w-10
+  height: 40px; // h-10
+  border-radius: 50%;
+  background-color: $nav-cta;
+}

@@ -91,8 +91,6 @@ export const NavCta = ({ closeDropdown }: childProp) => {
   // ============================================================
 
   const handleLeave = () => {
-    // if (!split1Ref.current || !split2Ref.current) return;
-
     // Kill both timelines
     enterTlRef.current?.kill();
     leaveTlRef.current?.kill();
@@ -140,27 +138,6 @@ export const NavCta = ({ closeDropdown }: childProp) => {
       },
       "-=0.1",
     );
-
-    // ── Words row 2 exits down, row 1 returns ─────────────────
-    // tl.to(
-    //   split2Ref.current?.chars,
-    //   {
-    //     y: "0%",
-    //     duration: 0.3,
-    //     ease: "circ.inOut",
-    //     stagger: 0.007,
-    //   },
-    //   "-=0.3",
-    // ).to(
-    //   split1Ref.current.chars,
-    //   {
-    //     y: "0%",
-    //     duration: 0.3,
-    //     ease: "circ.inOut",
-    //     stagger: 0.007,
-    //   },
-    //   "<", // starts at same time as row 2 exit
-    // );
   };
 
   // ============================================================
@@ -171,7 +148,7 @@ export const NavCta = ({ closeDropdown }: childProp) => {
     <div ref={wrapperRef}>
       <Link
         href={"/contact"}
-        className="flex items-center gap-3 shrink-0 cursor-pointer group"
+        className="flex items-center gap-2 shrink-0 cursor-pointer group"
         onMouseEnter={handleEnter}
         onMouseLeave={handleLeave}
       >
@@ -179,7 +156,7 @@ export const NavCta = ({ closeDropdown }: childProp) => {
           h-[1.5em] = explicit height of one line (matches line-height)
           overflow-hidden masks row 2 sitting below
       ── */}
-        <div className="h-[1.5em] flex flex-col">
+        <div className="h-[1.5em] flex flex-col items-center justify-center">
           {/* Text Animation */}
           <span className="relative overflow-hidden inline-flex font-bold text-nav-label text-nav-text leading-none font-p-n-montreal">
             {[...text].map((char, index) => (

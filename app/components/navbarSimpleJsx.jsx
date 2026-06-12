@@ -14,42 +14,41 @@ import {
   getVisibleMobileLinks,
   hasSeeAll,
   nav_links_simple,
-  SimplePanelLink,
-  type SimpleNavLink,
 } from "../data/navDataSimple";
+import "../css/index.css";
 
-const NavbarSimple = () => {
+const NavbarSimpleJsx = () => {
   const pathname = usePathname();
 
   // ── Mobile refs ──────────────────────────────────────────
-  const mobilePanelRef = useRef<HTMLDivElement>(null);
-  const mobileRowRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const accordionRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const mobileChevronRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const mobilePanelRef = useRef(null);
+  const mobileRowRefs = useRef([]);
+  const accordionRefs = useRef([]);
+  const mobileChevronRefs = useRef([]);
 
   // ── Mobile tracking refs ─────────────────────────────────
-  const isMobileOpen = useRef<boolean>(false);
-  const openAccordion = useRef<number>(-1);
-  const burgerTopRef = useRef<HTMLSpanElement>(null);
-  const burgerBottomRef = useRef<HTMLSpanElement>(null);
+  const isMobileOpen = useRef(false);
+  const openAccordion = useRef(-1);
+  const burgerTopRef = useRef(null);
+  const burgerBottomRef = useRef(null);
 
   // ── Desktop refs ─────────────────────────────────────────
-  const overlayRef = useRef<HTMLDivElement>(null);
-  const pillRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const plainPillRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const chevronRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const dropdownRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const linkRefs = useRef<(HTMLAnchorElement | null)[][]>([]);
-  const arrowRefs = useRef<(HTMLSpanElement | null)[][]>([]);
-  const imgRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const imageLinkRefs = useRef<(HTMLAnchorElement | null)[]>([]);
-  const captionRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const imgWrapperRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const roundButtonRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const overlayRef = useRef(null);
+  const pillRefs = useRef([]);
+  const plainPillRefs = useRef([]);
+  const chevronRefs = useRef([]);
+  const dropdownRefs = useRef([]);
+  const linkRefs = useRef([]);
+  const arrowRefs = useRef([]);
+  const imgRefs = useRef([]);
+  const imageLinkRefs = useRef([]);
+  const captionRefs = useRef([]);
+  const imgWrapperRefs = useRef([]);
+  const roundButtonRefs = useRef([]);
 
   // ── Tracking refs ────────────────────────────────────────
-  const openPanelIndex = useRef<number>(-1);
-  const activeLinkIndex = useRef<number[]>([]);
+  const openPanelIndex = useRef(-1);
+  const activeLinkIndex = useRef([]);
 
   // ── Derived data ─────────────────────────────────────────
   const dropdownTriggers = nav_links_simple.filter((l) => l.dropdown);
@@ -122,7 +121,7 @@ const NavbarSimple = () => {
   // OPEN DROPDOWN
   // ============================================================
 
-  const openDropdown = (panelIndex: number) => {
+  const openDropdown = (panelIndex) => {
     if (openPanelIndex.current === panelIndex) return;
     if (openPanelIndex.current !== -1) closeDropdown(openPanelIndex.current);
 
@@ -211,7 +210,7 @@ const NavbarSimple = () => {
   // CLOSE DROPDOWN
   // ============================================================
 
-  const closeDropdown = (panelIndex: number = openPanelIndex.current) => {
+  const closeDropdown = (panelIndex = openPanelIndex.current) => {
     if (panelIndex === -1) return;
 
     const dropdown = dropdownRefs.current[panelIndex];
@@ -230,7 +229,7 @@ const NavbarSimple = () => {
         onComplete: () => {
           gsap.set(dropdown, { y: 16 });
           if (img) gsap.set(img, { scale: 1.1 });
-          const links = dropdownTriggers[panelIndex]?.dropdown_links;
+          const links = dropdownTriggers[panelIndex]?.dropdown_links ?? [];
           linkRefs.current[panelIndex]?.forEach((link) => {
             if (link) link.tabIndex = -1;
           });
@@ -279,7 +278,7 @@ const NavbarSimple = () => {
   // LINK HOVER
   // ============================================================
 
-  const handleLinkHover = (panelIndex: number, itemIndex: number) => {
+  const handleLinkHover = (panelIndex, itemIndex) => {
     const prevIndex = activeLinkIndex.current[panelIndex];
 
     if (prevIndex !== -1 && prevIndex !== itemIndex) {
@@ -337,7 +336,7 @@ const NavbarSimple = () => {
     activeLinkIndex.current[panelIndex] = itemIndex;
   };
 
-  const handleLinkLeave = (panelIndex: number, itemIndex: number) => {
+  const handleLinkLeave = (panelIndex, itemIndex) => {
     const arrow = arrowRefs.current[panelIndex]?.[itemIndex];
     const link = linkRefs.current[panelIndex]?.[itemIndex];
     if (arrow) {
@@ -366,7 +365,7 @@ const NavbarSimple = () => {
   // PLAIN LINK PILL
   // ============================================================
 
-  const handlePlainLinkEnter = (el: HTMLElement | null) => {
+  const handlePlainLinkEnter = (el) => {
     if (!el) return;
     closeDropdown(openPanelIndex.current);
     gsap.killTweensOf(el);
@@ -378,7 +377,7 @@ const NavbarSimple = () => {
     });
   };
 
-  const handlePlainLinkLeave = (el: HTMLElement | null, href: string) => {
+  const handlePlainLinkLeave = (el, href) => {
     if (!el || href === pathname) return;
     gsap.killTweensOf(el);
     gsap.to(el, {
@@ -392,7 +391,8 @@ const NavbarSimple = () => {
   // ============================================================
   // DROPDOWN IMAGE ENTER
   // ============================================================
-  const handleImageEnter = (panelIndex: number) => {
+
+  const handleImageEnter = (panelIndex) => {
     const img = imgRefs.current[panelIndex];
     const roundButton = roundButtonRefs.current[panelIndex];
     if (!img) return;
@@ -404,7 +404,6 @@ const NavbarSimple = () => {
       ease: "power2.out",
       overwrite: "auto",
     });
-
     gsap.to(roundButton, {
       scale: 1.1,
       duration: 0.4,
@@ -413,7 +412,7 @@ const NavbarSimple = () => {
     });
   };
 
-  const handleImageLeave = (panelIndex: number) => {
+  const handleImageLeave = (panelIndex) => {
     const img = imgRefs.current[panelIndex];
     const roundButton = roundButtonRefs.current[panelIndex];
     if (!img) return;
@@ -425,7 +424,6 @@ const NavbarSimple = () => {
       ease: "power2.out",
       overwrite: "auto",
     });
-
     gsap.to(roundButton, {
       scale: 1,
       duration: 0.25,
@@ -447,14 +445,12 @@ const NavbarSimple = () => {
 
     isMobileOpen.current = false;
 
-    // Close burger menu
     gsap.to(burgerTopRef.current, {
       position: "relative",
       rotate: 0,
       duration: 0.25,
       ease: "back.out(2)",
     });
-
     gsap.to(burgerBottomRef.current, {
       position: "relative",
       rotate: 0,
@@ -464,7 +460,6 @@ const NavbarSimple = () => {
 
     if (panel) {
       gsap.killTweensOf(panel);
-
       gsap.to(panel, {
         opacity: 0,
         y: 16,
@@ -480,18 +475,9 @@ const NavbarSimple = () => {
     isMobileOpen.current = false;
     openAccordion.current = -1;
 
-    // Reset burger icon instantly
-    gsap.set(burgerTopRef.current, {
-      position: "relative",
-      rotate: 0,
-    });
+    gsap.set(burgerTopRef.current, { position: "relative", rotate: 0 });
+    gsap.set(burgerBottomRef.current, { position: "relative", rotate: 0 });
 
-    gsap.set(burgerBottomRef.current, {
-      position: "relative",
-      rotate: 0,
-    });
-
-    // Reset mobile panel instantly
     if (mobilePanelRef.current) {
       gsap.set(mobilePanelRef.current, {
         opacity: 0,
@@ -500,23 +486,11 @@ const NavbarSimple = () => {
       });
     }
 
-    // Reset accordions instantly
     accordionRefs.current.forEach((a) => {
-      if (a) {
-        gsap.set(a, {
-          opacity: 0,
-          height: 0,
-        });
-      }
+      if (a) gsap.set(a, { opacity: 0, height: 0 });
     });
-
-    // Reset accordion chevrons instantly
     mobileChevronRefs.current.forEach((c) => {
-      if (c) {
-        gsap.set(c, {
-          rotation: 0,
-        });
-      }
+      if (c) gsap.set(c, { rotation: 0 });
     });
   };
 
@@ -527,7 +501,6 @@ const NavbarSimple = () => {
     if (!isMobileOpen.current) {
       isMobileOpen.current = true;
 
-      // Hamburger Menu
       gsap.to(burgerTopRef.current, {
         position: "absolute",
         rotate: 45,
@@ -550,6 +523,7 @@ const NavbarSimple = () => {
         pointerEvents: "auto",
         overwrite: "auto",
       });
+
       const rows = mobileRowRefs.current.filter(Boolean);
       if (rows.length) {
         gsap.fromTo(
@@ -574,7 +548,7 @@ const NavbarSimple = () => {
   // MOBILE — ACCORDION
   // ============================================================
 
-  const openAccordionPanel = (index: number) => {
+  const openAccordionPanel = (index) => {
     if (openAccordion.current !== -1 && openAccordion.current !== index) {
       closeAccordion(openAccordion.current);
 
@@ -589,7 +563,7 @@ const NavbarSimple = () => {
           height: "auto",
           duration: 0.4,
           ease: "power3.out",
-          delay: 0.25, // starts halfway through the close
+          delay: 0.25,
           overwrite: "auto",
         });
       }
@@ -606,10 +580,10 @@ const NavbarSimple = () => {
       return;
     }
 
-    // No panel open — open directly
     openAccordion.current = index;
     const acc = accordionRefs.current[index];
     const chevron = mobileChevronRefs.current[index];
+
     if (acc) {
       gsap.killTweensOf(acc);
       gsap.to(acc, {
@@ -631,7 +605,7 @@ const NavbarSimple = () => {
     }
   };
 
-  const closeAccordion = (index: number) => {
+  const closeAccordion = (index) => {
     const acc = accordionRefs.current[index];
     const chevron = mobileChevronRefs.current[index];
     if (acc) {
@@ -656,47 +630,35 @@ const NavbarSimple = () => {
     openAccordion.current = -1;
   };
 
-  const toggleAccordion = (index: number) => {
+  const toggleAccordion = (index) => {
     openAccordion.current === index
       ? closeAccordion(index)
       : openAccordionPanel(index);
   };
 
   // ============================================================
-  // NAV FOCUS - Helper function to re-focus to nav link
+  // NAV FOCUS
   // ============================================================
-  const handleDropdownLinkkeyDown = (
-    e: React.KeyboardEvent,
-    panelIndex: number,
-    itemIndex: number,
-    totalItems: number,
-  ) => {
+
+  const handleDropdownLinkkeyDown = (e, panelIndex, itemIndex, totalItems) => {
     if (e.key === "Tab") {
-      // 1. Shift + Tab on the first link -> Go back to the trigger
       if (e.shiftKey && itemIndex === 0) {
         e.preventDefault();
-        // This focuses the "trigger" link in the main bar
         pillRefs.current[panelIndex]?.parentElement?.focus();
         closeDropdown(panelIndex);
-      }
-
-      // 2. Tab (no shift) on the LAST link -> Go to NEXT nav item
-      else if (!e.shiftKey && itemIndex === totalItems - 1) {
+      } else if (!e.shiftKey && itemIndex === totalItems - 1) {
         e.preventDefault();
         closeDropdown(panelIndex);
 
-        // Calculate the next focusable item in the main nav list
-        // We look for the parent of the trigger and find its next sibling
         const currentTrigger = pillRefs.current[panelIndex]?.parentElement;
         const nextTriggerContainer =
           currentTrigger?.parentElement?.nextElementSibling;
         const nextFocusable = nextTriggerContainer?.querySelector("a");
 
         if (nextFocusable) {
-          (nextFocusable as HTMLElement).focus();
+          nextFocusable.focus();
         } else {
-          // Fallback: if no next link, go to CTA
-          document.querySelector<HTMLElement>(".nav-cta-button")?.focus();
+          document.querySelector(".nav-cta-button")?.focus();
         }
       }
     }
@@ -708,29 +670,23 @@ const NavbarSimple = () => {
 
   return (
     <>
-      <div
-        ref={overlayRef}
-        className="fixed inset-0 bg-white/10 backdrop-blur-md pointer-events-none z-40 opacity-0 hidden nav:block"
-      />
+      {/* Overlay */}
+      <div ref={overlayRef} className="nav-overlay" />
 
-      <div className="fixed top-nav-offset left-0 right-0 flex-col items-center z-50 hidden nav:flex">
+      {/* ── DESKTOP ── */}
+      <div className="nav-desktop-wrapper">
         <div
+          className="nav-float-container"
           onMouseLeave={() => closeDropdown(openPanelIndex.current)}
-          className="relative"
         >
           {/* Floating bar */}
-          <div className="w-[95vw] navWide:w-[72vw] max-w-nav h-nav-height bg-nav-bg rounded-nav flex items-center justify-between px-4">
-            <Link href="/" className="flex items-center gap-2 shrink-0">
+          <div className="nav-bar">
+            <Link href="/" className="nav-logo">
               <LogoSvg width={32} height={32} />
-              <span className="text-nav-text font-bold font-p-n-montreal text-2xl uppercase">
-                Logo
-              </span>
+              <span className="nav-logo-text">Logo</span>
             </Link>
 
-            <nav
-              aria-label="Main navigation"
-              className="flex items-center gap-nav-gap"
-            >
+            <nav aria-label="Main navigation" className="nav-links">
               {nav_links_simple.map((navlink, i) => {
                 const dropdownIndex = dropdownTriggers.findIndex(
                   (d) => d.link_name === navlink.link_name,
@@ -738,27 +694,23 @@ const NavbarSimple = () => {
                 const plainIndex = plainLinks.findIndex(
                   (l) => l.link_name === navlink.link_name,
                 );
+
                 return (
                   <div
                     key={`desktop-${navlink.link_name}-${i}`}
-                    className="relative"
+                    className="nav-link-wrap"
                   >
                     {navlink.dropdown ? (
                       <Link
                         href={navlink.href}
-                        className="relative z-0 flex items-center gap-1 px-nav-pill-x py-nav-pill-y font-p-n-montreal font-bold text-nav-label text-nav-text"
+                        className="nav-trigger"
                         onMouseEnter={() => openDropdown(dropdownIndex)}
                         onFocus={() => openDropdown(dropdownIndex)}
                         onKeyDown={(e) => {
-                          if (e.key === "Escape") {
-                            closeDropdown(dropdownIndex);
-                          }
-
-                          // Tab pressed on trigger - move into dropdown image
+                          if (e.key === "Escape") closeDropdown(dropdownIndex);
                           if (e.key === "Tab" && !e.shiftKey) {
                             const imageLink =
                               imageLinkRefs.current[dropdownIndex];
-
                             if (imageLink) {
                               e.preventDefault();
                               openDropdown(dropdownIndex);
@@ -771,14 +723,14 @@ const NavbarSimple = () => {
                           ref={(el) => {
                             pillRefs.current[dropdownIndex] = el;
                           }}
-                          className="absolute inset-0 bg-nav-text/8 rounded-pill -z-10 opacity-0"
+                          className="nav-pill"
                         />
                         <span>{navlink.link_name}</span>
                         <div
                           ref={(el) => {
                             chevronRefs.current[dropdownIndex] = el;
                           }}
-                          className="flex items-center will-change-transform"
+                          className="nav-chevron"
                         >
                           <Down_arrow width={12} height={12} />
                         </div>
@@ -786,7 +738,7 @@ const NavbarSimple = () => {
                     ) : (
                       <Link
                         href={navlink.href}
-                        className="relative z-0 flex items-center px-nav-pill-x py-nav-pill-y font-p-n-montreal font-bold text-nav-label text-nav-text"
+                        className="nav-plain-link"
                         onMouseEnter={() =>
                           handlePlainLinkEnter(
                             plainPillRefs.current[plainIndex],
@@ -803,7 +755,7 @@ const NavbarSimple = () => {
                           ref={(el) => {
                             plainPillRefs.current[plainIndex] = el;
                           }}
-                          className="absolute inset-0 bg-nav-text/8 rounded-pill -z-10 opacity-0"
+                          className="nav-pill"
                         />
                         {navlink.link_name}
                       </Link>
@@ -820,8 +772,8 @@ const NavbarSimple = () => {
           {dropdownTriggers.map((trigger, panelIndex) => {
             const links = trigger.dropdown_links;
             const half = Math.ceil(links.length / 2);
-            const colA: SimplePanelLink[] = links.slice(0, half);
-            const colB: SimplePanelLink[] = links.slice(half);
+            const colA = links.slice(0, half);
+            const colB = links.slice(half);
 
             if (!linkRefs.current[panelIndex])
               linkRefs.current[panelIndex] = [];
@@ -837,39 +789,26 @@ const NavbarSimple = () => {
                 ref={(el) => {
                   dropdownRefs.current[panelIndex] = el;
                 }}
-                className="absolute opacity-0 top-nav-height left-0 w-[95vw] navWide:w-[72vw] max-w-nav pt-dropdown-gap will-change-transform"
+                className="nav-dropdown"
               >
-                <div className="bg-nav-bg p-dropdown-pad rounded-dropdown h-93.75 flex overflow-hidden">
-                  {/* Single static image */}
+                <div className="nav-dropdown__inner">
+                  {/* Image */}
                   <Link
                     ref={(el) => {
                       imageLinkRefs.current[panelIndex] = el;
                     }}
                     href={trigger.imageCaptionHref ?? trigger.href}
-                    className="w-image-col relative rounded-pill shrink-0 overflow-hidden"
+                    className="nav-img-link"
                     onMouseEnter={() => handleImageEnter(panelIndex)}
                     onMouseLeave={() => handleImageLeave(panelIndex)}
                     onKeyDown={(e) => {
-                      // SHIFT + TAB from image -> back to trigger
                       if (e.key === "Tab" && e.shiftKey) {
                         e.preventDefault();
-
-                        const trigger =
-                          pillRefs.current[panelIndex]?.parentElement;
-
-                        trigger?.focus();
-
+                        pillRefs.current[panelIndex]?.parentElement?.focus();
                         closeDropdown(panelIndex);
-                      }
-
-                      // TAB from image -> first dropdown text link
-                      else if (e.key === "Tab" && !e.shiftKey) {
+                      } else if (e.key === "Tab" && !e.shiftKey) {
                         e.preventDefault();
-
-                        const firstDropdownLink =
-                          linkRefs.current[panelIndex]?.[0];
-
-                        firstDropdownLink?.focus();
+                        linkRefs.current[panelIndex]?.[0]?.focus();
                       }
                     }}
                   >
@@ -877,7 +816,7 @@ const NavbarSimple = () => {
                       ref={(el) => {
                         imgRefs.current[panelIndex] = el;
                       }}
-                      className="absolute inset-0 will-change-transform"
+                      className="nav-img-wrap"
                     >
                       {trigger.image && (
                         <Image
@@ -890,22 +829,21 @@ const NavbarSimple = () => {
                       )}
                     </div>
 
-                    {/* Caption */}
                     <div
                       ref={(el) => {
                         captionRefs.current[panelIndex] = el;
                       }}
-                      className="absolute bottom-0 left-0 right-0 p-4 flex items-center will-change-transform"
+                      className="nav-img-caption"
                     >
-                      <div className="flex items-center justify-between w-full">
-                        <span className="text-nav-label text-white font-medium">
+                      <div className="nav-caption-inner">
+                        <span className="nav-caption-text">
                           {trigger.imageCaption ?? trigger.link_name}
                         </span>
                         <div
                           ref={(el) => {
                             roundButtonRefs.current[panelIndex] = el;
                           }}
-                          className="flex items-center justify-center w-8 h-8 rounded-full bg-white"
+                          className="nav-round-btn"
                         >
                           <svg
                             viewBox="0 0 1024 1024"
@@ -916,17 +854,17 @@ const NavbarSimple = () => {
                             strokeWidth="64.512"
                             style={{ transform: "rotate(-90deg)" }}
                           >
-                            <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                            <g id="SVGRepo_bgCarrier" strokeWidth="0" />
                             <g
                               id="SVGRepo_tracerCarrier"
                               strokeLinecap="round"
                               strokeLinejoin="round"
-                            ></g>
+                            />
                             <g id="SVGRepo_iconCarrier">
                               <path
                                 d="M903.232 256l56.768 50.432L512 768 64 306.432 120.768 256 512 659.072z"
                                 fill="#000000"
-                              ></path>
+                              />
                             </g>
                           </svg>
                         </div>
@@ -934,10 +872,10 @@ const NavbarSimple = () => {
                     </div>
                   </Link>
 
-                  {/* Links column */}
-                  <div className="flex-1 flex px-8 py-6">
-                    <div className="grid grid-cols-2 gap-x-4 gap-y-1 w-full">
-                      <div className="flex flex-col">
+                  {/* Links */}
+                  <div className="nav-links-col">
+                    <div className="nav-links-grid">
+                      <div className="nav-col">
                         {colA.map((item, colIndex) => {
                           const globalIndex = colIndex;
                           return (
@@ -948,7 +886,7 @@ const NavbarSimple = () => {
                               ref={(el) => {
                                 linkRefs.current[panelIndex][globalIndex] = el;
                               }}
-                              className="flex items-center py-2 text-nav-dropdown-link text-nav-text font-medium will-change-transform w-fit font-inter"
+                              className="nav-dropdown-link"
                               onMouseEnter={() =>
                                 handleLinkHover(panelIndex, globalIndex)
                               }
@@ -961,7 +899,7 @@ const NavbarSimple = () => {
                                   arrowRefs.current[panelIndex][globalIndex] =
                                     el;
                                 }}
-                                className="flex items-center mr-2 will-change-transform"
+                                className="nav-arrow"
                               >
                                 <ArrowRight width={12} height={12} />
                               </span>
@@ -970,7 +908,8 @@ const NavbarSimple = () => {
                           );
                         })}
                       </div>
-                      <div className="flex flex-col">
+
+                      <div className="nav-col">
                         {colB.map((item, colIndex) => {
                           const globalIndex = colA.length + colIndex;
                           const totalItems = trigger.dropdown_links.length;
@@ -990,7 +929,7 @@ const NavbarSimple = () => {
                                   totalItems,
                                 )
                               }
-                              className="flex items-center py-2 text-nav-dropdown-link text-nav-text font-medium will-change-transform w-fit font-inter"
+                              className="nav-dropdown-link"
                               onMouseEnter={() =>
                                 handleLinkHover(panelIndex, globalIndex)
                               }
@@ -1003,7 +942,7 @@ const NavbarSimple = () => {
                                   arrowRefs.current[panelIndex][globalIndex] =
                                     el;
                                 }}
-                                className="flex items-center mr-2 will-change-transform"
+                                className="nav-arrow"
                               >
                                 <ArrowRight width={12} height={12} />
                               </span>
@@ -1021,40 +960,30 @@ const NavbarSimple = () => {
         </div>
       </div>
 
-      <div className="fixed top-nav-offset left-0 right-0 flex flex-col items-center z-50 nav:hidden px-4">
+      {/* ── MOBILE ── */}
+      <div className="nav-mobile-wrapper">
         {/* Mobile bar */}
-        <div className="w-full h-nav-height-mobile bg-nav-bg rounded-nav flex items-center justify-between px-5">
-          <Link href="/" className="flex items-center gap-2 shrink-0">
+        <div className="nav-bar-mobile">
+          <Link href="/" className="nav-logo">
             <LogoSvg width={28} height={28} />
-            <span className="text-nav-text font-bold font-p-n-montreal text-xl">
-              Logo
-            </span>
+            <span className="nav-logo-text--mobile">Logo</span>
           </Link>
 
           <button
             onClick={toggleMobileMenu}
-            className="flex items-center justify-center w-10 h-10 rounded-full bg-nav-cta"
+            className="nav-burger"
             aria-label="Toggle navigation menu"
           >
-            <div className="relative flex flex-col justify-center items-center gap-1.25 w-4.5">
-              <span
-                ref={burgerTopRef}
-                className="block w-full h-[1.5px] bg-[#1C2B2B] will-change-transform"
-              />
-              <span
-                ref={burgerBottomRef}
-                className="block w-full h-[1.5px] bg-[#1C2B2B] will-change-transform"
-              />
+            <div className="nav-burger-inner">
+              <span ref={burgerTopRef} className="nav-burger-line" />
+              <span ref={burgerBottomRef} className="nav-burger-line" />
             </div>
           </button>
         </div>
 
         {/* Mobile panel */}
-        <div
-          ref={mobilePanelRef}
-          className="relative w-full mt-2 bg-nav-bg rounded-nav opacity-0 will-change-transform"
-        >
-          <div className="px-5 py-3">
+        <div ref={mobilePanelRef} className="nav-mobile-panel">
+          <div className="nav-mobile-inner">
             {nav_links_simple.map((navlink, i) => {
               const isDropdown = navlink.dropdown === true;
               const dropdownData = isDropdown
@@ -1074,51 +1003,47 @@ const NavbarSimple = () => {
                   ref={(el) => {
                     mobileRowRefs.current[i] = el;
                   }}
-                  className="border-b border-nav-text/20 last:border-0"
+                  className="nav-mobile-row"
                 >
                   {isDropdown ? (
                     <>
                       <button
                         onClick={() => toggleAccordion(accordionIdx)}
-                        className="w-full flex items-center justify-between py-2 text-nav-text font-helvetica-now font-semibold text-nav-mobile tracking-nav-tight"
+                        className="nav-mobile-acc-trigger"
                       >
                         <span>{navlink.link_name}</span>
                         <span
                           ref={(el) => {
                             mobileChevronRefs.current[accordionIdx] = el;
                           }}
-                          className="flex items-center will-change-transform"
+                          className="nav-mobile-chevron"
                         >
                           <Down_arrow width={14} height={14} />
                         </span>
                       </button>
 
-                      <div className="overflow-hidden">
+                      <div className="nav-mobile-acc-overflow">
                         <div
                           ref={(el) => {
                             accordionRefs.current[accordionIdx] = el;
                           }}
-                          className="will-change-transform origin-top pb-3"
+                          className="nav-mobile-acc-body"
                         >
                           {getVisibleMobileLinks(
-                            (dropdownData?.dropdown_links as SimplePanelLink[]) ??
-                              [],
+                            dropdownData?.dropdown_links ?? [],
                           ).map((item) => (
                             <Link
                               key={`mob-link-${item.link_name}`}
                               href={item.href}
-                              className="block py-2 pl-2 text-nav-muted font-medium text-lg font-helvetica-now"
+                              className="nav-mobile-acc-link"
                             >
                               {item.link_name}
                             </Link>
                           ))}
-                          {hasSeeAll(
-                            (dropdownData?.dropdown_links as SimplePanelLink[]) ??
-                              [],
-                          ) && (
+                          {hasSeeAll(dropdownData?.dropdown_links ?? []) && (
                             <Link
                               href={navlink.href}
-                              className="block py-2 pl-2 text-nav-muted underline underline-offset-2 text-lg font-helvetica-now font-medium"
+                              className="nav-mobile-see-all"
                             >
                               See All
                             </Link>
@@ -1127,10 +1052,7 @@ const NavbarSimple = () => {
                       </div>
                     </>
                   ) : (
-                    <Link
-                      href={navlink.href}
-                      className="block py-3 text-nav-text font-helvetica-now font-semibold text-nav-mobile tracking-nav-tight"
-                    >
+                    <Link href={navlink.href} className="nav-mobile-plain-link">
                       {navlink.link_name}
                     </Link>
                   )}
@@ -1140,15 +1062,10 @@ const NavbarSimple = () => {
           </div>
 
           {/* Mobile CTA */}
-          <div className="absolute w-full h-nav-height-mobile flex items-center left-0 mt-2 bg-nav-bg rounded-xl px-5 py-4">
-            <Link
-              href="/contact"
-              className="flex items-center justify-between w-full"
-            >
-              <span className="text-nav-text font-helvetica-now font-semibold text-nav-mobile tracking-nav-tight">
-                Contact us
-              </span>
-              <div className="flex items-center justify-center w-10 h-10 rounded-full bg-nav-cta">
+          <div className="nav-mobile-cta-bar">
+            <Link href="/contact" className="nav-mobile-cta-link">
+              <span className="nav-mobile-cta-text">Contact us</span>
+              <div className="nav-mobile-cta-circle">
                 <svg viewBox="0 0 24 24" width={18} height={18} fill="none">
                   <path
                     d="M7 7H17M17 7V17M17 7L7 17"
@@ -1166,4 +1083,4 @@ const NavbarSimple = () => {
   );
 };
 
-export default NavbarSimple;
+export default NavbarSimpleJsx;
