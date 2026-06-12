@@ -711,7 +711,7 @@ const Navbar = () => {
     <>
       <div
         ref={overlayRef}
-        className="fixed inset-0 bg-nav-bg/40 pointer-events-none z-40 opacity-0 hidden nav:block"
+        className="fixed inset-0 bg-black/20 pointer-events-none z-40 opacity-0 hidden nav:block backdrop-blur-md"
       />
 
       {/* ── DESKTOP ─────────────────────────────────────── */}
@@ -721,7 +721,7 @@ const Navbar = () => {
           className="relative"
         >
           {/* Floating nav */}
-          <div className="w-[95vw] navWide:w-[62vw] max-w-nav h-nav-height bg-nav-bg rounded-nav flex items-center justify-between px-6">
+          <div className="w-[95vw] navWide:w-[72vw] max-w-nav h-nav-height bg-nav-bg rounded-nav flex items-center justify-between px-6">
             <Link href="/" className="flex items-center gap-2 shrink-0">
               <LogoSvg width={32} height={32} />
               <span className="text-nav-text font-bold font-p-n-montreal text-nav-logo">
@@ -834,9 +834,9 @@ const Navbar = () => {
                 ref={(el) => {
                   dropdownRefs.current[panelIndex] = el;
                 }}
-                className="absolute opacity-0 top-nav-height left-0 w-[95vw] navWide:w-[62vw] max-w-nav pt-dropdown-gap will-change-transform"
+                className="absolute opacity-0 top-nav-height left-0 w-[95vw] navWide:w-[72vw] max-w-nav pt-dropdown-gap will-change-transform"
               >
-                <div className="bg-nav-bg p-dropdown-pad rounded-dropdown h-112.5 flex overflow-hidden">
+                <div className="bg-nav-bg p-dropdown-pad rounded-dropdown h-93.75 flex overflow-hidden">
                   {/* Image column */}
                   <div className="w-image-col relative rounded-pill shrink-0 overflow-hidden">
                     <div className="absolute inset-0">
