@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { DropdownItem, nav_links } from "@/app/data/navData";
@@ -27,6 +27,7 @@ const Navbar = () => {
   const openAccordion = useRef<number>(-1);
   const burgerTopRef = useRef<HTMLSpanElement>(null);
   const burgerBottomRef = useRef<HTMLSpanElement>(null);
+  const [mobPanelHeight, setMobPanelHeight] = useState<boolean>(false);
 
   // ── Desktop refs ─────────────────────────────────────────
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -609,6 +610,7 @@ const Navbar = () => {
     }
 
     openAccordion.current = index;
+    setMobPanelHeight(true);
     const acc = accordionRefs.current[index];
     const chevron = mobileChevronRefs.current[index];
     if (acc) {
@@ -657,9 +659,14 @@ const Navbar = () => {
     openAccordion.current = -1;
   };
 
+  const closeAllAccordions = (index: number) => {
+    closeAccordion(index);
+    setMobPanelHeight(false);
+  };
+
   const toggleAccordion = (index: number) => {
     openAccordion.current === index
-      ? closeAccordion(index)
+      ? closeAllAccordions(index)
       : openAccordionPanel(index);
   };
 
@@ -982,9 +989,16 @@ const Navbar = () => {
         {/* Mobile panel */}
         <div
           ref={mobilePanelRef}
+          style={
+            mobPanelHeight === true
+              ? {
+                  height: "calc(100vh - 176px)",
+                }
+              : { height: "auto" }
+          }
           className="relative w-full mt-2 bg-nav-bg rounded-nav will-change-transform opacity-0"
         >
-          <div className="px-5 py-3">
+          <div className="max-h-screen-nav overflow-y-scroll scrollbar-hide px-5 py-3">
             {nav_links.map((navlink, i) => {
               const isDropdown = navlink.dropdown === true;
               const dropdownData = isDropdown
@@ -1070,7 +1084,7 @@ const Navbar = () => {
           </div>
 
           {/* Mobile CTA */}
-          <div className="absolute w-full h-nav-height-mobile flex items-center left-0 mt-2 bg-nav-bg rounded-xl px-5 py-4">
+          <div className="absolute w-full h-nav-height-mobile flex items-center left-0 top-full mt-2 bg-nav-bg rounded-dropdown px-5 py-4">
             <Link
               href="/contact"
               className="flex items-center justify-between w-full"

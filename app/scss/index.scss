@@ -5,16 +5,16 @@
 
 // ── Breakpoints ─────────────────────────────────────────────
 $bp-nav: 980px;
-$bp-navWide: 1600px;
+$bp-navWide: 1200px;
 
 // ── Spacing ──────────────────────────────────────────────────
-$nav-height: 72px;
+$nav-height: 64px;
 $nav-height-mobile: 64px;
-$nav-offset: 24px;
+$nav-offset: 16px;
 $nav-pill-x: 12px;
-$nav-pill-y: 12px;
-$nav-gap: 12px;
-$dropdown-gap: 12px;
+$nav-pill-y: 8px;
+$nav-gap: 8px;
+$dropdown-gap: 8px;
 $dropdown-pad: 16px;
 $image-col: 32%;
 
@@ -22,12 +22,12 @@ $image-col: 32%;
 $max-nav: 1300px;
 
 // ── Border radius ─────────────────────────────────────────────
-$radius-pill: 8px;
-$radius-nav: 8px;
-$radius-dropdown: 8px;
+$radius-pill: 4px;
+$radius-nav: 4px;
+$radius-dropdown: 4px;
 
 // ── Font sizes ────────────────────────────────────────────────
-$text-nav-label: 20px;
+$text-nav-label: 18px;
 $text-nav-label-lh: 1.5;
 $text-nav-logo: 32px;
 $text-nav-logo-lh: 1.2;
@@ -51,10 +51,10 @@ $nav-text-8: rgba(56, 56, 56, 0.08);
 // bg-nav-text/20 → rgba of #383838 at 20% opacity
 $nav-text-20: rgba(56, 56, 56, 0.2);
 // bg-nav-bg/40  → rgba of #f2f6f8 at 40% opacity
-$nav-bg-40: rgba(242, 246, 248, 0.4);
+$nav-bg-40: rgba(0, 0, 0, 0.4);
 
 // ── h-112.5 → 112.5 × 4px = 450px ───────────────────────────
-$dropdown-height: 450px;
+$dropdown-height: 375px;
 
 // ============================================================
 // OVERLAY
@@ -65,6 +65,7 @@ $dropdown-height: 450px;
   position: fixed;
   inset: 0;
   background-color: $nav-bg-40;
+  backdrop-filter: blur(12px);
   pointer-events: none;
   z-index: 40;
   opacity: 0;
@@ -120,7 +121,7 @@ $dropdown-height: 450px;
   padding-right: 24px;
 
   @media (min-width: $bp-navWide) {
-    width: 62vw;
+    width: 72vw;
   }
 }
 
@@ -241,7 +242,7 @@ $dropdown-height: 450px;
   will-change: transform;
 
   @media (min-width: $bp-navWide) {
-    width: 62vw;
+    width: 72vw;
   }
 
   // ── Dropdown inner card ──────────────────────────────────
@@ -486,7 +487,15 @@ $dropdown-height: 450px;
 // ── Mobile inner padding ──────────────────────────────────────
 // px-5 py-3
 .nav-mobile-inner {
-  padding: 12px 20px; // py-3 = 12px, px-5 = 20px
+  padding: 12px 20px;
+  max-height: calc(100vh - 176px);
+  overflow-y: scroll;
+  // hide scrollbar
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 // ============================================================
@@ -605,10 +614,11 @@ $dropdown-height: 450px;
   display: flex;
   align-items: center;
   left: 0;
-  margin-top: 8px; // mt-2
+  top: 100%; // ← replaces margin-top: 8px
+  margin-top: 8px;
   background-color: $nav-bg;
-  border-radius: 12px; // rounded-xl
-  padding: 16px 20px; // py-4 = 16px, px-5 = 20px
+  border-radius: 12px;
+  padding: 16px 20px;
 }
 
 // ── Mobile CTA anchor ─────────────────────────────────────────

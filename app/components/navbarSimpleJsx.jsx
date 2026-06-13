@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -25,6 +25,7 @@ const NavbarSimpleJsx = () => {
   const mobileRowRefs = useRef([]);
   const accordionRefs = useRef([]);
   const mobileChevronRefs = useRef([]);
+  const [mobPanelHeight, setMobPanelHeight] = useState(false);
 
   // ── Mobile tracking refs ─────────────────────────────────
   const isMobileOpen = useRef(false);
@@ -581,6 +582,7 @@ const NavbarSimpleJsx = () => {
     }
 
     openAccordion.current = index;
+    setMobPanelHeight(true);
     const acc = accordionRefs.current[index];
     const chevron = mobileChevronRefs.current[index];
 
@@ -630,12 +632,16 @@ const NavbarSimpleJsx = () => {
     openAccordion.current = -1;
   };
 
-  const toggleAccordion = (index) => {
-    openAccordion.current === index
-      ? closeAccordion(index)
-      : openAccordionPanel(index);
+  const closeAllAccordions = (index) => {
+    closeAccordion(index);
+    setMobPanelHeight(false);
   };
 
+  const toggleAccordion = (index) => {
+    openAccordion.current === index
+      ? closeAllAccordions(index)
+      : openAccordionPanel(index);
+  };
   // ============================================================
   // NAV FOCUS
   // ============================================================
@@ -982,7 +988,15 @@ const NavbarSimpleJsx = () => {
         </div>
 
         {/* Mobile panel */}
-        <div ref={mobilePanelRef} className="nav-mobile-panel">
+        <div
+          ref={mobilePanelRef}
+          style={
+            mobPanelHeight
+              ? { height: "calc(100vh - 176px)" }
+              : { height: "auto" }
+          }
+          className="nav-mobile-panel"
+        >
           <div className="nav-mobile-inner">
             {nav_links_simple.map((navlink, i) => {
               const isDropdown = navlink.dropdown === true;
