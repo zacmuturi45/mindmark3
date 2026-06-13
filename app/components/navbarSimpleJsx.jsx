@@ -445,6 +445,7 @@ const NavbarSimpleJsx = () => {
     }
 
     isMobileOpen.current = false;
+    setMobPanelHeight(false);
 
     gsap.to(burgerTopRef.current, {
       position: "relative",

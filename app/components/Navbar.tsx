@@ -449,6 +449,7 @@ const Navbar = () => {
     }
 
     isMobileOpen.current = false;
+    setMobPanelHeight(false);
 
     // Close burger menu
     gsap.to(burgerTopRef.current, {

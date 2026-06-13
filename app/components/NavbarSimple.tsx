@@ -447,6 +447,7 @@ const NavbarSimple = () => {
     }
 
     isMobileOpen.current = false;
+    setMobPanelHeight(false);
 
     // Close burger menu
     gsap.to(burgerTopRef.current, {
@@ -472,6 +473,16 @@ const NavbarSimple = () => {
         duration: 0.35,
         ease: "power3.in",
         pointerEvents: "none",
+        overwrite: "auto",
+      });
+    }
+
+    if (overlayRef.current) {
+      gsap.killTweensOf(overlayRef.current);
+      gsap.to(overlayRef.current, {
+        opacity: 0,
+        duration: 0.3,
+        ease: "power2.in",
         overwrite: "auto",
       });
     }
@@ -565,6 +576,16 @@ const NavbarSimple = () => {
             overwrite: "auto",
           },
         );
+      }
+
+      if (overlayRef.current) {
+        gsap.killTweensOf(overlayRef.current);
+        gsap.to(overlayRef.current, {
+          opacity: 1,
+          duration: 0.3,
+          ease: "power2.out",
+          overwrite: "auto",
+        });
       }
     } else {
       closeMobileMenu();
@@ -717,7 +738,7 @@ const NavbarSimple = () => {
     <>
       <div
         ref={overlayRef}
-        className="fixed inset-0 bg-black/20 backdrop-blur-md pointer-events-none z-40 opacity-0 hidden nav:block"
+        className="fixed inset-0 bg-black/20 backdrop-blur-md pointer-events-none z-40 opacity-0 nav:block"
       />
 
       <div className="fixed top-nav-offset left-0 right-0 flex-col items-center z-50 hidden nav:flex">
