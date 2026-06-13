@@ -23,7 +23,7 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="w-screen h-screen bg-black/20 flex justify-start px-6 items-center">
+    <div className="w-screen h-screen bg-black/20 flex justify-center px-6 items-center">
       <div
         className="group relative flex cursor-pointer"
         style={{ width: totalWidth ?? "auto" }}

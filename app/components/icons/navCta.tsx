@@ -7,7 +7,6 @@ import { SplitText } from "gsap/SplitText";
 gsap.registerPlugin(SplitText);
 import Link from "next/link";
 
-const words = ["Talk", "to", "us"];
 interface childProp {
   closeDropdown: () => void;
 }
@@ -54,7 +53,7 @@ export const NavCta = ({ closeDropdown }: childProp) => {
       {
         x: "102%",
         y: "-102%",
-        duration: 0.4,
+        duration: 0.35,
         ease: "circ.inOut",
       },
       0, // fires with text
@@ -66,7 +65,7 @@ export const NavCta = ({ closeDropdown }: childProp) => {
       blackBgRef.current,
       {
         scale: 1,
-        duration: 0.2,
+        duration: 0.15,
         ease: "circ.inOut",
       },
       "-=0.25", // overlaps with arrow1 exit
@@ -79,10 +78,10 @@ export const NavCta = ({ closeDropdown }: childProp) => {
       {
         x: "0%",
         y: "0%",
-        duration: 0.2,
-        ease: "circ.inOut",
+        duration: 0.3,
+        ease: "power3.out",
       },
-      "-=0.18", // overlaps with black bg scaling
+      "-=0.15", // overlaps with black bg scaling
     );
   };
 
@@ -152,32 +151,10 @@ export const NavCta = ({ closeDropdown }: childProp) => {
         onMouseEnter={handleEnter}
         onMouseLeave={handleLeave}
       >
-        {/* ── Text section ─────────────────────────────────────────
-          h-[1.5em] = explicit height of one line (matches line-height)
-          overflow-hidden masks row 2 sitting below
-      ── */}
         <div className="h-[1.5em] flex flex-col items-center justify-center">
-          {/* Text Animation */}
+          {/* Text */}
           <span className="relative overflow-hidden inline-flex font-bold text-nav-label text-nav-text leading-none font-p-n-montreal">
-            {[...text].map((char, index) => (
-              <span
-                key={index}
-                style={{
-                  transitionDelay: `${index * 0.01}s`,
-                }}
-                className="
-              inline-block
-              transition-transform
-              duration-500
-              ease-[cubic-bezier(0.625,0.05,0,1)]
-              [text-shadow:0_1.2em_currentColor]
-              transform-[translateY(0em)]
-              group-hover:-translate-y-[1.2em]
-              "
-              >
-                {char === " " ? "\u00A0" : char}
-              </span>
-            ))}
+            Contact us
           </span>
         </div>
 
@@ -198,7 +175,7 @@ export const NavCta = ({ closeDropdown }: childProp) => {
             ref={arrow1Ref}
             className="relative z-10 flex items-center justify-center"
           >
-            <svg viewBox="0 0 24 24" width={24} height={24} fill="none">
+            <svg viewBox="0 0 24 24" width={20} height={20} fill="none">
               <g clipPath="url(#clip0_arrow1)">
                 <path
                   d="M7 7H17M17 7V17M17 7L7 17"
@@ -221,7 +198,7 @@ export const NavCta = ({ closeDropdown }: childProp) => {
             ref={arrow2Ref}
             className="absolute z-10 flex items-center justify-center"
           >
-            <svg viewBox="0 0 24 24" width={24} height={24} fill="none">
+            <svg viewBox="0 0 24 24" width={20} height={20} fill="none">
               <g clipPath="url(#clip0_arrow2)">
                 <path
                   d="M7 7H17M17 7V17M17 7L7 17"

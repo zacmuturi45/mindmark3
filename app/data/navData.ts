@@ -93,7 +93,7 @@ export const nav_links: NavLink[] = [
   {
     link_name: "Archive",
     dropdown: false,
-    href: "/explorations",
+    href: "/archive",
     dropdown_links: [],
   },
 ];

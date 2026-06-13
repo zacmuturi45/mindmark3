@@ -20,27 +20,27 @@ export interface SimpleNavLink {
 }
 
 const methodologyLinks: SimplePanelLink[] = [
-  { link_name: "Online Bulletins", href: "/methodology/bulletins" },
-  { link_name: "Methodology", href: "/methodology/overview" },
-  { link_name: "Hashed Maps", href: "/methodology/maps" },
-  { link_name: "Tried & Tested", href: "/methodology/tested" },
-  { link_name: "Customized Briefs", href: "/methodology/briefs" },
-  { link_name: "Creative Insights", href: "/methodology/insights" },
-  { link_name: "New Articles", href: "/methodology/articles" },
-  { link_name: "One-offs", href: "/methodology/oneoffs" },
-  { link_name: "White Boards", href: "/methodology/whiteboards" },
+  { link_name: "Online Bulletins", href: "/systems/bulletins" },
+  { link_name: "Methodology", href: "/systems/overview" },
+  { link_name: "Hashed Maps", href: "/systems/maps" },
+  { link_name: "Tried & Tested", href: "/systems/tested" },
+  { link_name: "Customized Briefs", href: "/systems/briefs" },
+  { link_name: "Creative Insights", href: "/systems/insights" },
+  { link_name: "New Articles", href: "/systems/articles" },
+  { link_name: "One-offs", href: "/systems/oneoffs" },
+  { link_name: "White Boards", href: "/systems/whiteboards" },
 ];
 
 const criteriaLinks: SimplePanelLink[] = [
-  { link_name: "Brand Criteria", href: "/criteria/brand" },
-  { link_name: "Design Standards", href: "/criteria/design" },
-  { link_name: "Content Rules", href: "/criteria/content" },
-  { link_name: "Accessibility", href: "/criteria/accessibility" },
-  { link_name: "Performance", href: "/criteria/performance" },
-  { link_name: "Motion Language", href: "/criteria/motion" },
-  { link_name: "Typography", href: "/criteria/typography" },
-  { link_name: "Color System", href: "/criteria/color" },
-  { link_name: "Spacing", href: "/criteria/spacing" },
+  { link_name: "Brand Criteria", href: "/framework/brand" },
+  { link_name: "Design Standards", href: "/framework/design" },
+  { link_name: "Content Rules", href: "/framework/content" },
+  { link_name: "Accessibility", href: "/framework/accessibility" },
+  { link_name: "Performance", href: "/framework/performance" },
+  { link_name: "Motion Language", href: "/framework/motion" },
+  { link_name: "Typography", href: "/framework/typography" },
+  { link_name: "Color System", href: "/framework/color" },
+  { link_name: "Spacing", href: "/framework/spacing" },
 ];
 
 export const nav_links_simple: SimpleNavLink[] = [

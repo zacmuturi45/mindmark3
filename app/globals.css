@@ -76,6 +76,21 @@ Mixing them up won't break things immediately but fonts especially need inline o
   }
 }
 
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+
+  .max-h-screen-nav {
+    max-height: calc(100vh - 176px);
+  }
+}
+
 body {
   background: var(--background);
 }
